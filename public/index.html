@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DataCore</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary:   { DEFAULT: '#7C3AED', light: '#A78BFA', dark: '#5B21B6' },
+                        surface:   { DEFAULT: '#1E1B4B', card: '#2D2B55', input: '#3D3B65' },
+                        accent:    { green: '#10B981', red: '#EF4444', yellow: '#F59E0B' },
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen font-sans">
+
+    <!-- App shell rendered by JS -->
+    <div id="app"></div>
+
+    <!-- Global Click Handler - MUST load first -->
+    <script src="/assets/js/global-click-handler.js"></script>
+    <!-- Click Interceptor - MUST load first to catch all clicks -->
+    <script src="/assets/js/click-interceptor.js"></script>
+    <!-- Debug helper -->
+    <script src="/assets/js/debug.js"></script>
+    <!-- Core modules (order matters: dependencies first) -->
+    <script src="/assets/js/api.js"></script>
+    <script src="/assets/js/auth.js"></script>
+    <script src="/assets/js/router.js"></script>
+    <!-- Components (must be loaded before views that use them) -->
+    <script src="/assets/js/components/toast.js"></script>
+    <script src="/assets/js/components/navbar.js"></script>
+    <!-- Views -->
+    <script src="/assets/js/views/login.js"></script>
+    <script src="/assets/js/views/search.js"></script>
+    <script src="/assets/js/views/sede.js"></script>
+    <script src="/assets/js/views/dashboard.js"></script>
+    <script src="/assets/js/views/cohort.js"></script>
+    <script src="/assets/js/views/clan.js"></script>
+    <script src="/assets/js/views/couder.js"></script>
+    <!-- Entry point -->
+    <script src="/assets/js/main.js"></script>
+    
+    <!-- Global click handler - ensures navigation works -->
+    <script>
+        // Handler global para interceptar clicks en botones con onclick
+        document.addEventListener('click', function(e) {
+            // Buscar si el click fue en un elemento con onclick
+            var target = e.target;
+            var clickable = target.closest('[onclick]');
+            
+            if (clickable) {
+                var onclickAttr = clickable.getAttribute('onclick');
+                console.log('Click intercepted on element with onclick:', onclickAttr);
+                
+                // Interceptar Router.navigate calls
+                if (onclickAttr && onclickAttr.includes('Router.navigate')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Extraer la ruta y parámetros
+                    var match = onclickAttr.match(/Router\.navigate\(['"](\w+)['"]\s*,?\s*(\{[^}]*\})?\)/);
+                    if (match) {
+                        var route = match[1];
+                        var params = match[2];
+                        console.log('Navigating to:', route, params);
+                        
+                        // Construir hash URL
+                        var hash = '#' + route;
+                        if (params) {
+                            var idMatch = params.match(/id:\s*(\d+)/);
+                            var ccMatch = params.match(/cc:\s*['"]([^'"]+)['"]/);
+                            if (idMatch) hash += '?id=' + idMatch[1];
+                            if (ccMatch) hash += '?cc=' + encodeURIComponent(ccMatch[1]);
+                        }
+                        window.location.hash = hash;
+                        return;
+                    }
+                }
+                
+                // Interceptar Auth.logout calls
+                if (onclickAttr && onclickAttr.includes('Auth.logout')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Logout clicked');
+                    if (window.Auth && window.Auth.logout) {
+                        window.Auth.logout();
+                    }
+                    window.location.hash = '#login';
+                    return;
+                }
+            }
+            
+            // Buscar tarjeta de sede clickeada
+            var sedeCard = e.target.closest('.sede-card');
+            if (sedeCard) {
+                var sedeId = sedeCard.getAttribute('data-sede-id');
+                console.log('Sede clicked:', sedeId);
+                window.location.hash = '#sede?id=' + sedeId;
+                return;
+            }
+            
+            // Buscar tarjeta de cohort clickeada
+            var cohortCard = e.target.closest('.cohort-card');
+            if (cohortCard) {
+                var cohortId = cohortCard.getAttribute('data-cohort-id');
+                console.log('Cohort clicked:', cohortId);
+                window.location.hash = '#cohort?id=' + cohortId;
+                return;
+            }
+            
+            // Buscar tarjeta de clan clickeada
+            var clanCard = e.target.closest('.clan-card');
+            if (clanCard) {
+                var clanId = clanCard.getAttribute('data-clan-id');
+                console.log('Clan clicked:', clanId);
+                window.location.hash = '#clan?id=' + clanId;
+                return;
+            }
+            
+            // Buscar tarjeta de couder clickeada
+            var couderCard = e.target.closest('.couder-card');
+            if (couderCard) {
+                var couderCc = couderCard.getAttribute('data-couder-cc');
+                console.log('Couder clicked:', couderCc);
+                window.location.hash = '#couder?cc=' + couderCc;
+                return;
+            }
+            
+            // Botón de Dashboard
+            var dashboardBtn = e.target.closest('#navbar-dashboard, [onclick*="dashboard"]');
+            if (dashboardBtn) {
+                console.log('Dashboard button clicked');
+                window.location.hash = '#dashboard';
+                return;
+            }
+            
+            // Botón de Buscar/Search
+            var searchBtn = e.target.closest('#global-search-input, [onclick*="search"]');
+            if (searchBtn) {
+                console.log('Search button clicked');
+                window.location.hash = '#search';
+                return;
+            }
+            
+            // Botón de Salir/Logout
+            var logoutBtn = e.target.closest('#navbar-logout, [onclick*="logout"]');
+            if (logoutBtn) {
+                console.log('Logout button clicked');
+                if (window.Auth && window.Auth.logout) {
+                    window.Auth.logout();
+                }
+                window.location.hash = '#login';
+                return;
+            }
+            
+            // Logo/DataCore click
+            var logo = e.target.closest('#navbar-logo');
+            if (logo) {
+                console.log('Logo clicked');
+                window.location.hash = '#dashboard';
+                return;
+            }
+        });
+        
+        console.log('Global click handler installed');
+    </script>
+    
+    <!-- Debug script for clicks -->
+    <script src="/debug-clicks.js"></script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+# =============================================================================
+# DATACORE - DATOS DE MIGRACIÓN PARA TESTING
+# =============================================================================
+# Este archivo contiene datos suficientes para probar todas las funcionalidades
+# del sistema DataCore con datos realistas.
+# 
+# Formato: CSV con separador | (pipe) para evitar conflictos con comas
+# =============================================================================
+# TABLA: USERS (Usuarios interventores)
+# =============================================================================
+id|full_name|email|password|role_id|is_active
+1|Interventor Demo|interventor@clinica.com|Interventor1234!|1|true
+2|Lili Martinez|lili.martinez@clinica.com|Lili1234!|1|true
+3|Alejandra Rodriguez|alejandra.rodriguez@clinica.com|Alejandra1234!|1|true
+4|Bybelas Gonzalez|bybelas.gonzalez@clinica.com|Bybelas1234!|1|true
+5|Carlos Lopez|carlos.lopez@clinica.com|Carlos1234!|1|true
+
+# =============================================================================
+# TABLA: COUDERS (Aprendices)
+# =============================================================================
+id|national_id|full_name|email|phone|clan_id|status|average_score
+1001|123456789|Juan Perez Garcia|juan.perez@email.com|3001234567|57|active|85.5
+1002|987654321|Maria Rodriguez Lopez|maria.rodriguez@email.com|3102345678|57|active|78.2
+1003|456789123|Carlos Martinez Sanchez|carlos.martinez@email.com|3203456789|57|withdrawn|92.1
+1004|789123456|Ana Diaz Herrera|ana.diaz@email.com|3304567890|57|active|88.7
+1005|321654987|Luis Torres Ramirez|luis.torres@email.com|3405678901|57|active|91.3
+1006|654987321|Sofia Castro Morales|sofia.castro@email.com|3506789012|57|active|87.9
+1007|159753852|Pedro Guerrero Vargas|pedro.guerrero@email.com|3607890123|57|active|89.4
+1008|852741963|Laura Navarro Mendoza|laura.navarro@email.com|3708901234|57|completed|94.2
+1009|741852963|David Ortiz Silva|david.ortiz@email.com|3809012345|57|active|86.8
+1010|963258741|Elena Ruiz Torres|elena.ruiz@email.com|3900123456|57|active|90.1
+1011|258147369|Miguel Angel Romero|miguel.angel@email.com|3101234567|58|active|83.5
+1012|147369258|Carmen Lopez Diaz|carmen.lopez@email.com|3202345678|58|active|88.9
+1013|369258147|Jose Martin Herrera|jose.martin@email.com|3303456789|58|withdrawn|76.4
+1014|258369741|Patricia Gil Sanchez|patricia.gil@email.com|3404567890|58|active|91.2
+1015|741258963|Antonio Vargas Ruiz|antonio.vargas@email.com|3505678901|58|active|87.6
+1016|852147963|Monica Morales Torres|monica.morales@email.com|3606789012|58|active|89.3
+1017|963852741|Francisco Guerrero Castro|francisco.guerrero@email.com|3707890123|58|active|85.7
+1018|159748263|Sandra Navarro Ortiz|sandra.navarro@email.com|3809012345|58|completed|93.1
+1019|748263159|Ricardo Angel Gil|ricardo.angel@email.com|3900123456|58|active|88.4
+1020|263159748|Isabel Lopez Martin|isabel.lopez@email.com|3101234567|59|active|90.2
+1021|159748263|Daniel Herrera Diaz|daniel.herrera@email.com|3202345678|59|active|87.8
+1022|748263159|Laura Sanchez Romero|laura.sanchez@email.com|3303456789|59|withdrawn|75.3
+1023|263748159|Carlos Vargas Morales|carlos.vargas@email.com|3404567890|59|active|91.5
+1024|748159263|Ana Guerrero Lopez|ana.guerrero@email.com|3505678901|59|active|89.7
+1025|159263748|Miguel Castro Navarro|miguel.castro@email.com|3606789012|59|active|88.1
+1026|263748159|Patricia Angel Sanchez|patricia.angel@email.com|3707890123|59|active|90.4
+1027|748159263|Luis Morales Gil|luis.morales@email.com|3809012345|59|completed|92.8
+1028|159748263|Sofia Vargas Herrera|sofia.vargas@email.com|3900123456|59|active|87.9
+1029|748263159|David Guerrero Martin|david.guerrero@email.com|3101234567|60|active|89.2
+1030|263748159|Elena Angel Lopez|elena.angel@email.com|3202345678|60|active|91.6
+1031|159748263|Francisco Castro Sanchez|francisco.castro@email.com|3303456789|60|withdrawn|78.4
+1032|748263159|Isabel Morales Herrera|isabel.morales@email.com|3404567890|60|active|90.1
+1033|263748159|Carlos Vargas Gil|carlos.vargas@email.com|3505678901|60|active|88.7
+1034|748159263|Ana Guerrero Angel|ana.guerrero@email.com|3606789012|60|active|89.3
+1035|159748263|Miguel Castro Navarro|miguel.castro@email.com|3707890123|60|completed|93.5
+
+# =============================================================================
+# TABLA: INTERVENTIONS (Intervenciones clínicas)
+# =============================================================================
+id|couder_id|user_id|intervention_type_id|notes|session_date|session_time
+1|1001|1|1|Evaluación inicial del aprendiz. Muestra buena actitud y disposición para aprender. Necesita apoyo en matemáticas básicas.|2024-01-15|09:00
+2|1001|2|1|Seguimiento: Ha mejorado significativamente en matemáticas. Participa activamente en clase. Recomiendo reforzamiento en comunicación.|2024-01-22|10:30
+3|1001|2|2|Seguimiento: Sigue con buen progreso. Presenta algunas dificultades en trabajo en equipo. Se trabajará en habilidades sociales.|2024-01-29|14:00
+4|1002|1|1|Evaluación inicial: Aprendiz con potencial alto. Requiere atención especial en lectura comprensiva. Buen comportamiento general.|2024-01-16|11:00
+5|1002|2|1|Seguimiento: Ha mostrado mejora notable en lectura. Participa más en actividades grupales. Continuar con apoyo actual.|2024-01-23|15:30
+6|1003|1|1|Evaluación inicial: Capacidades sobresalientes en lógica. Presenta resistencia a seguir instrucciones. Necesita trabajo en disciplina.|2024-01-17|08:30
+7|1004|1|1|Evaluación inicial: Excelente desempeño en áreas técnicas. Timidez en presentaciones orales. Fomentar participación.|2024-01-18|09:30
+8|1005|1|1|Evaluación inicial: Muy buen rendimiento académico. Lidera grupos de trabajo. Potencial para rol de liderazgo.|2024-01-19|10:00
+9|1006|1|1|Evaluación inicial: Creatividad destacada. Dificultades en organización del tiempo. Implementar técnicas de estudio.|2024-01-20|11:30
+10|1007|1|1|Evaluación inicial: Buen dominio de conceptos básicos. Necesita practicar más resolución de problemas.|2024-01-21|13:00
+11|1008|1|1|Evaluación inicial: Excelente memoria y capacidad de análisis. Perfeccionista, debe aprender a manejar frustración.|2024-01-22|14:30
+12|1009|1|1|Evaluación inicial: Habilidades interpersonales muy desarrolladas. Requiere refuerzo en pensamiento crítico.|2024-01-23|08:00
+13|1010|1|1|Evaluación inicial: Rápido aprendizaje práctico. Dificultad en teoría abstracta. Usar ejemplos concretos.|2024-01-24|09:00
+14|1011|1|1|Evaluación inicial: Muy organizado y metódico. Tendencia a aislarse en trabajo individual. Fomentar integración.|2024-01-25|10:30
+15|1012|1|1|Evaluación inicial: Excelente comunicación verbal. Escritura necesita mejora en estructura y coherencia.|2024-01-26|11:00
+16|1013|1|1|Evaluación inicial: Gran capacidad de síntesis. Impaciente con procesos lentos. Practicar tolerancia.|2024-01-27|13:30
+17|1014|1|1|Evaluación inicial: Muy buena capacidad de observación. Tímido para expresar opiniones. Crear ambiente de confianza.|2024-01-28|14:00
+18|1015|1|1|Evaluación inicial: Lidera naturalmente grupos. Delega eficazmente. Aprender a escuchar más activamente.|2024-01-29|08:30
+19|1016|1|1|Evaluación inicial: Muy creativo en resolución de problemas. Desorganizado en seguimiento de tareas.|2024-01-30|09:00
+20|1017|1|1|Evaluación inicial: Excelente memoria visual. Dificultad en expresión escrita. Practicar redacción.|2024-01-31|10:30
+21|1018|1|1|Evaluación inicial: Muy bueno en trabajo colaborativo. Tiende a procrastinar. Implementar técnicas de gestión.|2024-02-01|11:00
+22|1019|1|1|Evaluación inicial: Razonamiento lógico excelente. Necesita mejorar empatía en relaciones interpersonales.|2024-02-02|13:30
+23|1020|1|1|Evaluación inicial: Muy buen desempeño general. Ansiedad en presentaciones. Técnicas de relajación.|2024-02-03|14:00
+24|1021|1|1|Evaluación inicial: Capacidad de análisis crítica muy desarrollada. Scepticismo excesivo. Equilibrar criticismo.|2024-02-04|08:00
+25|1022|1|1|Evaluación inicial: Excelente en aprendizaje práctico. Resistencia al feedback constructivo. Abrirse a crítica.|2024-02-05|09:30
+26|1023|1|1|Evaluación inicial: Muy bueno en comunicación escrita. Dificultad en expresión oral. Practicar exposiciones.|2024-02-06|10:00
+27|1024|1|1|Evaluación inicial: Creatividad excepcional. Falta de atención a detalles. Enfoque en precisión.|2024-02-07|11:30
+28|1025|1|1|Evaluación inicial: Excelente liderazgo emergente. Dominante en exceso. Practicar colaboración.|2024-02-08|13:00
+29|1026|1|1|Evaluación inicial: Muy buen rendimiento académico. Perfeccionismo paralizante. Aceptar imperfección.|2024-02-09|14:00
+30|1027|1|1|Evaluación inicial: Excelente capacidad de síntesis. Introversión marcada. Fomentar socialización.|2024-02-10|08:30
+31|1028|1|1|Evaluación inicial: Muy bueno en trabajo en equipo. Tendencia a liderar sin ser designado. Respetar roles.|2024-02-11|09:00
+32|1029|1|1|Evaluación inicial: Creatividad sobresaliente. Desorganización en gestión del tiempo. Implementar agenda.|2024-02-12|10:30
+33|1030|1|1|Evaluación inicial: Excelente memoria a largo plazo. Olvida detalles inmediatos. Usar recordatorios.|2024-02-13|11:00
+34|1031|1|1|Evaluación inicial: Muy buen razonamiento abstracto. Dificultad en aplicación práctica. Más ejercicios.|2024-02-14|13:30
+35|1032|1|1|Evaluación inicial: Excelente en análisis de datos. Comunicación técnica muy buena. Simplificar explicaciones.|2024-02-15|14:00
+36|1033|1|1|Evaluación inicial: Muy bueno en resolución creativa. Impaciencia con procesos lentos. Practicar mindfulness.|2024-02-16|08:00
+37|1034|1|1|Evaluación inicial: Excelente capacidad de adaptación. Cambios frecuentes de humor. Estabilidad emocional.|2024-02-17|09:30
+38|1035|1|1|Evaluación inicial: Muy bueno en aprendizaje autónomo. Dependencia excesiva de validación. Autoconfianza.|2024-02-18|10:00
+39|1001|3|1|Valoración de riesgo: Detectados signos de estrés académico. Recomendado sesiones de relajación y tutoría.|2024-02-05|11:00
+40|1002|3|1|Valoración de riesgo: Excelente adaptación social. Posibles dificultades familiares. Investigar contexto.|2024-02-06|13:30
+41|1004|3|1|Valoración de riesgo: Timidez extrema en presentaciones. Posible ansiedad social. Intervención recomendada.|2024-02-07|08:30
+42|1005|3|1|Valoración de riesgo: Liderazgo positivo pero tendencia al agotamiento. Gestión del estrés necesaria.|2024-02-08|10:00
+43|1001|4|1|Cierre de ciclo: Ha completado exitosamente el programa. Recomendado continuar en nivel avanzado. Excelente progreso.|2024-02-10|14:00
+44|1002|4|1|Cierre de ciclo: Buen desempeño general. Necesita reforzamiento en comunicación asertiva. Listo para siguiente nivel.|2024-02-11|09:30
+45|1004|4|1|Cierre de ciclo: Mejora notable en confianza. Recomendado participar en club de oratoria. Graduado con éxito.|2024-02-12|11:00
+
+# =============================================================================
+# TABLA: AI_ANALYSES (Análisis de IA generados)
+# =============================================================================
+id|couder_id|period_label|summary|diagnosis|suggestions
+1|1001|2024-Q1|Juan muestra progreso académico constante con mejoras significativas en matemáticas y participación. Ha desarrollado habilidades sociales aunque necesita refuerzo en trabajo en equipo.|Aprendiz con alto potencial y buena actitud. Presenta fortalezas en áreas técnicas y capacidad de liderazgo emergente. Requiere apoyo continuo en matemáticas y desarrollo de habilidades sociales.|["Continuar con tutoría de matemáticas", "Fomentar participación en proyectos grupales", "Desarrollar actividades de integración social", "Mantener apoyo actual en comunicación", "Considerar programa de liderazgo juvenil"]
+2|1002|2024-Q1|María ha mejorado notablemente en lectura comprensiva y participación grupal. Mantiene buen rendimiento académico general.|Estudiante con excelente potencial y actitud positiva. Demuestra capacidad de adaptación y mejora continua. Fortalezas en áreas técnicas y buena disposición para aprender.|["Reforzar técnicas de estudio avanzadas", "Participar en club de lectura", "Continuar con apoyo actual", "Explorar programas de enriquecimiento", "Mantener hábitos de estudio actuales"]
+3|1003|2024-Q1|Carlos mostró capacidades sobresalientes en lógica pero tuvo dificultades disciplinarias que llevaron a su retiro del programa.|Aprendiz con alto potencial cognitivo pero con desafíos en autorregulación y seguimiento de instrucciones. Fortalezas en razonamiento lógico y pensamiento crítico.|["Programa de manejo de conducta", "Desarrollo de habilidades de autorregulación", "Tutoría individualizada", "Actividades de seguimiento de instrucciones", "Considerar reingreso con apoyo adicional"]
+4|1004|2024-Q1|Ana presenta excelente desempeño en áreas técnicas pero requiere apoyo en comunicación oral y presentaciones.|Estudiante con alto rendimiento académico y capacidades técnicas destacadas. Principal desafío en habilidades de comunicación oral y expresión pública. Timidez moderada.|["Programa de desarrollo de habilidades públicas", "Práctica gradual de presentaciones", "Tutoría en comunicación", "Participar en debates estructurados", "Grabar y revisar presentaciones propias"]
+
+# =============================================================================
+# INSTRUCCIONES DE MIGRACIÓN
+# =============================================================================
+# 1. Importar datos en orden: USERS -> COUDERS -> INTERVENTIONS -> AI_ANALYSES
+# 2. Los IDs de clan_id en COUDERS deben corresponder a los clans existentes
+# 3. Los user_id en INTERVENTIONS deben corresponder a los usuarios importados
+# 4. Los couder_id en INTERVENTIONS y AI_ANALYSES deben coincidir
+# 5. Las fechas están en formato YYYY-MM-DD
+# 6. Los passwords deben ser hasheados con bcryptjs (12 rounds)
+#
+# COMANDOS SQL PARA IMPORTAR:
+# COPY users FROM 'datos-migracion-testing.csv' WITH DELIMITER '|' CSV HEADER;
+# COPY couders FROM 'datos-migracion-testing.csv' WITH DELIMITER '|' CSV HEADER;
+# COPY interventions FROM 'datos-migracion-testing.csv' WITH DELIMITER '|' CSV HEADER;
+# COPY ai_analyses FROM 'datos-migracion-testing.csv' WITH DELIMITER '|' CSV HEADER;
+#
+# NOTA: Este archivo contiene datos realistas para testing completo del sistema
+# =============================================================================
+# ESTADÍSTICAS DE LOS DATOS:
+# =============================================================================
+# - Usuarios: 5 interventores
+# - Couders: 35 aprendices con diferentes estados
+# - Intervenciones: 45 registros variados
+# - Análisis IA: 4 ejemplos completos
+# - Cobertura: Todas las funcionalidades del sistema pueden ser probadas
+# =============================================================================
+# FIN DEL ARCHIVO DE MIGRACIÓN
+# =============================================================================

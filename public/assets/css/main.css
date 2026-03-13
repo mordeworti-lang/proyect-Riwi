@@ -1,0 +1,202 @@
+/* =========================================================
+   Clinical System – Global Styles
+   Clean white-accent dark theme
+   ========================================================= */
+
+* { box-sizing: border-box; }
+
+html, body {
+    height: 100%;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+}
+
+body {
+    background: #0f0e1a;
+    color: #f1f0ff;
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    min-height: 100vh;
+}
+
+/* App container scroll */
+#app {
+    min-height: 100vh;
+    overflow-y: auto;
+}
+
+/* ── Cards ─────────────────────────────────────────────── */
+.card {
+    background: #1a1830;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.card:hover { border-color: rgba(124,58,237,0.4); }
+.card-clickable { cursor: pointer; }
+.card-clickable:hover {
+    box-shadow: 0 0 0 2px rgba(124,58,237,0.35);
+    transform: translateY(-1px);
+}
+
+/* ── Stat badges ────────────────────────────────────────── */
+.badge-active    { background: #064e3b; color: #34d399; }
+.badge-withdrawn { background: #7f1d1d; color: #fca5a5; }
+.badge-completed { background: #1e3a5f; color: #93c5fd; }
+.badge-process   { background: #5b21b6; color: #c4b5fd; }
+
+/* ── Progress bar ───────────────────────────────────────── */
+.progress-track {
+    height: 6px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 99px;
+    overflow: hidden;
+}
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #7C3AED, #a78bfa);
+    border-radius: 99px;
+    transition: width 0.4s ease;
+}
+
+/* ── Buttons ─────────────────────────────────────────────── */
+.btn-primary {
+    background: #7C3AED;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1.25rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.btn-primary:hover { background: #6d28d9; }
+
+.btn-ghost {
+    background: transparent;
+    color: #a78bfa;
+    border: 1px solid rgba(167,139,250,0.3);
+    padding: 0.45rem 1rem;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.btn-ghost:hover { background: rgba(124,58,237,0.15); }
+
+/* ── Inputs ─────────────────────────────────────────────── */
+.input-field {
+    background: #1a1830;
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #f1f0ff;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.2s;
+}
+.input-field:focus { border-color: #7C3AED; }
+.input-field::placeholder { color: #6b6b8a; }
+
+/* ── Toast ───────────────────────────────────────────────── */
+#toast-container {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.toast {
+    padding: 0.75rem 1.25rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    animation: slideIn 0.3s ease;
+    max-width: 320px;
+}
+.toast-success { background: #064e3b; color: #34d399; border: 1px solid #065f46; }
+.toast-error   { background: #7f1d1d; color: #fca5a5; border: 1px solid #991b1b; }
+.toast-info    { background: #1e3a5f; color: #93c5fd; border: 1px solid #1e40af; }
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(1rem); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ── Navbar ──────────────────────────────────────────────── */
+.navbar {
+    background: #12112b;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding: 0.9rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+/* ── Spinner ─────────────────────────────────────────────── */
+.spinner {
+    width: 2rem; height: 2rem;
+    border: 3px solid rgba(255,255,255,0.1);
+    border-top-color: #7C3AED;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Section label ───────────────────────────────────────── */
+.section-icon { font-size: 1.2rem; margin-right: 0.5rem; }
+
+/* ── Scrollbar ───────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0f0e1a; }
+::-webkit-scrollbar-thumb { background: #3d3b65; border-radius: 4px; }
+
+/* Custom scrollbar for specific containers */
+.custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #3d3b65 #1a1830;
+}
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #1a1830;
+    border-radius: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #3d3b65;
+    border-radius: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #4a4870;
+}
+
+/* ── Toast notifications ──────────────────────────────────── */
+#toast-container {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.toast {
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.5rem;
+    color: white;
+    font-size: 0.9rem;
+    min-width: 220px;
+    max-width: 360px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    animation: toast-in 0.3s ease-out;
+}
+.toast-success { background: #065f46; border: 1px solid #10b981; }
+.toast-error   { background: #7f1d1d; border: 1px solid #ef4444; }
+.toast-info    { background: #1e3a5f; border: 1px solid #3b82f6; }
+@keyframes toast-in { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
