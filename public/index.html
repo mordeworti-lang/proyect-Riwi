@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -25,12 +25,6 @@
     <!-- App shell rendered by JS -->
     <div id="app"></div>
 
-    <!-- Global Click Handler - MUST load first -->
-    <script src="/assets/js/global-click-handler.js"></script>
-    <!-- Click Interceptor - MUST load first to catch all clicks -->
-    <script src="/assets/js/click-interceptor.js"></script>
-    <!-- Debug helper -->
-    <script src="/assets/js/debug.js"></script>
     <!-- Core modules (order matters: dependencies first) -->
     <script src="/assets/js/api.js"></script>
     <script src="/assets/js/auth.js"></script>
@@ -49,6 +43,7 @@
     <script src="/assets/js/views/couder.js"></script>
     <!-- Services -->
     <script src="/assets/js/services/ttsService.js"></script>
+    <script src="/assets/js/services/translationHelper.js"></script>
     <!-- Entry point -->
     <script src="/assets/js/main.js"></script>
     
@@ -177,7 +172,5 @@
         console.log('Global click handler installed');
     </script>
     
-    <!-- Debug script for clicks -->
-    <script src="/debug-clicks.js"></script>
-</body>
+    </body>
 </html>

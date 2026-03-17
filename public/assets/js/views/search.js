@@ -40,7 +40,7 @@ const SearchView = (() => {
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                                     </svg>
-                                    Búsqueda
+                                    Search
                                 </span>
                             </button>
                         </div>
@@ -49,7 +49,7 @@ const SearchView = (() => {
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                                 </svg>
-                                Cerrar Sesión
+                                Logout
                             </button>
                         </div>
                     </div>
@@ -58,7 +58,7 @@ const SearchView = (() => {
                 <!-- Main Content -->
                 <div class="p-6">
                     <div class="max-w-4xl mx-auto">
-                        <!-- Search Header -->
+                        <!-- Search Heaofr -->
                         <div class="text-center mb-8">
                             <div class="flex items-center justify-center gap-3 mb-6">
                                 <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
@@ -66,9 +66,9 @@ const SearchView = (() => {
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                                     </svg>
                                 </div>
-                                <h1 class="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Búsqueda de Couders</h1>
+                                <h1 class="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Couder Search</h1>
                             </div>
-                            <p class="text-gray-400 text-lg">Busca couders por número de cédula</p>
+                            <p class="text-gray-400 text-lg">Search couders by national ID number</p>
                         </div>
 
                         <!-- Search Form -->
@@ -83,7 +83,7 @@ const SearchView = (() => {
                                     <input 
                                         type="text" 
                                         id="search-input"
-                                        placeholder="Ingrese número de cédula..." 
+                                        placeholder="Enter national ID number..." 
                                         class="w-full bg-gray-700/50 backdrop-blur-sm border border-gray-600 rounded-lg pl-12 pr-12 py-4 text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none transition-all text-lg"
                                         autocomplete="off"
                                     >
@@ -104,9 +104,9 @@ const SearchView = (() => {
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                         </svg>
-                                        <span>La búsqueda se realiza automáticamente al escribir</span>
+                                        <span>Search performs automatically as you type</span>
                                     </div>
-                                    <span id="search-status">Listo para buscar</span>
+                                    <span id="search-status">Ready to search</span>
                                 </div>
                             </form>
                         </div>
@@ -119,8 +119,8 @@ const SearchView = (() => {
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                                     </svg>
                                 </div>
-                                <h3 class="text-xl font-semibold text-gray-300 mb-2">Busca un Couder</h3>
-                                <p class="text-gray-500">Ingresa un número de cédula para buscar información del couder</p>
+                                <h3 class="text-xl font-semibold text-gray-300 mb-2">Search for a Couder</h3>
+                                <p class="text-gray-500">Enter a national ID number to search for couder information</p>
                             </div>
                         </div>
                     </div>
@@ -128,11 +128,11 @@ const SearchView = (() => {
             </div>
         `;
 
-        // Setup event listeners
-        _setupEventListeners();
+        // Setup event LISTENERS
+        _setupEventLISTENERS();
     }
 
-    function _setupEventListeners() {
+    function _setupEventLISTENERS() {
         const searchForm = document.getElementById('search-form');
         const searchInput = document.getElementById('search-input');
         const searchStatus = document.getElementById('search-status');
@@ -151,7 +151,7 @@ const SearchView = (() => {
             searchInput.addEventListener('input', _handleRealTimeSearch);
             searchInput.addEventListener('focus', () => {
                 if (searchStatus) {
-                    searchStatus.textContent = 'Escribe al menos 3 digitos';
+                    searchStatus.textContent = 'Enter at least 3 digits';
                 }
             });
         }
@@ -178,11 +178,11 @@ const SearchView = (() => {
         
         if (searchStatus) {
             if (searchTerm.length === 0) {
-                searchStatus.textContent = 'Listo para buscar';
+                searchStatus.textContent = 'Ready to search';
             } else if (searchTerm.length < 3) {
-                searchStatus.textContent = 'Escribe al menos 3 digitos';
+                searchStatus.textContent = 'Enter at least 3 digits';
             } else {
-                searchStatus.textContent = 'Buscando...';
+                searchStatus.textContent = 'Searching...';
             }
         }
         
@@ -205,7 +205,7 @@ const SearchView = (() => {
         const searchTerm = searchInput.value.trim();
         
         if (searchTerm.length < 3) {
-            _showError('Por favor ingrese al menos 3 digitos');
+            _showError('Please enter at least 3 digits');
             return;
         }
         
@@ -218,40 +218,50 @@ const SearchView = (() => {
         
         try {
             if (searchStatus) {
-                searchStatus.textContent = 'Buscando couder...';
+                searchStatus.textContent = 'Searching couder...';
             }
             
             console.log('Searching for couder:', searchTerm);
             const couder = await Api.get(`/couders/search?cc=${encodeURIComponent(searchTerm)}`);
-            console.log('Search response:', couder);
+            console.log('Raw search response:', couder);
             
             if (!couder || !couder.id) {
                 _showNotFound(searchTerm);
                 if (searchStatus) {
-                    searchStatus.textContent = 'No encontrado';
+                    searchStatus.textContent = 'No Found';
                 }
                 return;
             }
             
-            _currentCouder = couder;
+            // Apply data mapping for consistency
+            const mappedCouder = TranslationHelper.mapBackendToFrontend(couder);
+            console.log('Mapped couder data:', mappedCouder);
+            
+            _currentCouder = mappedCouder;
             
             // Load interventions — API returns { couder, interventions } already unwrapped
             const intResult = await Api.get(`/couders/${couder.id}/interventions`);
-            _interventions = Array.isArray(intResult)
-                ? intResult
-                : (intResult && Array.isArray(intResult.interventions))
-                    ? intResult.interventions
-                    : [];
+            console.log('Raw interventions data:', intResult);
+            
+            // Apply data mapping for consistency
+            const mappedInterventions = TranslationHelper.mapArray(
+                Array.isArray(intResult) ? intResult
+                : (intResult && Array.isArray(intResult.interventions)) ? intResult.interventions
+                : []
+            );
+            console.log('Mapped interventions:', mappedInterventions);
+            
+            _interventions = mappedInterventions;
             
             _showCouderResults();
             
             if (searchStatus) {
-                searchStatus.textContent = 'Couder encontrado';
+                searchStatus.textContent = 'Couder found';
             }
             
         } catch (error) {
             console.error('Search error:', error);
-            _showError('Error al buscar couder: ' + error.message);
+            _showError('Error searching couder: ' + error.message);
             if (searchStatus) {
                 searchStatus.textContent = 'Error';
             }
@@ -262,12 +272,12 @@ const SearchView = (() => {
         const resultsContainer = document.getElementById('search-results');
         
         if (!_currentCouder) {
-            _showError('No hay datos del couder');
+            _showError('No couder data available');
             return;
         }
         
         const statusColor = _currentCouder.status === 'active' ? 'green' : _currentCouder.status === 'completed' ? 'blue' : 'red';
-        const statusText = _currentCouder.status === 'active' ? 'Activo' : _currentCouder.status === 'completed' ? 'Completado' : 'Inactivo';
+        const statusText = _currentCouder.status === 'active' ? 'Active' : _currentCouder.status === 'completed' ? 'Completed' : 'Inactive';
         
         resultsContainer.innerHTML = `
             <!-- Couder Profile Card -->
@@ -296,7 +306,7 @@ const SearchView = (() => {
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                 </svg>
-                                Ver Perfil
+                                View Profile
                             </button>
                         </div>
                     </div>
@@ -312,11 +322,11 @@ const SearchView = (() => {
                             <p class="text-white font-semibold text-lg group/item:text-blue-300 transition-colors">${_currentCouder.clan_name || 'N/A'}</p>
                         </div>
                         <div class="bg-gray-700/50 backdrop-blur-sm rounded-lg p-4 text-center group/item hover:bg-gray-700/70 transition-all">
-                            <span class="text-gray-400 text-sm">Puntaje</span>
+                            <span class="text-gray-400 text-sm">Score</span>
                             <p class="text-white font-semibold text-lg group/item:text-blue-300 transition-colors">${_currentCouder.average_score || 0}</p>
                         </div>
                         <div class="bg-gray-700/50 backdrop-blur-sm rounded-lg p-4 text-center group/item hover:bg-gray-700/70 transition-all">
-                            <span class="text-gray-400 text-sm group/item:text-gray-300 transition-colors">Intervenciones</span>
+                            <span class="text-gray-400 text-sm group/item:text-gray-300 transition-colors">Interventions</span>
                             <p class="text-white font-semibold text-lg group/item:text-blue-300 transition-colors">${_interventions.length}</p>
                         </div>
                     </div>
@@ -332,11 +342,11 @@ const SearchView = (() => {
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3m6 0v6a3 3 0 01-3 3H6a3 3 0 01-3 3v6a3 3 0 00-3 3H6a3 3 0 00-3 3v6z"/>
                             </svg>
                         </div>
-                        <h3 class="text-xl font-bold text-white">Historial de Intervenciones</h3>
-                        <span class="bg-blue-600/20 text-blue-400 px-3 py-1 rounded-full text-sm">${_interventions.length} intervenciones</span>
+                        <h3 class="text-xl font-bold text-white">History of Interventions</h3>
+                        <span class="bg-blue-600/20 text-blue-400 px-3 py-1 rounded-full text-sm">${_interventions.length} interventions</span>
                     </div>
                     <button onclick="Router.navigate('couder', { cc: '${_currentCouder.national_id}' })" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-all hover:scale-105 transform">
-                        Ver Todo
+                        View Profile
                     </button>
                 </div>
                 
@@ -347,8 +357,8 @@ const SearchView = (() => {
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3m6 0v6a3 3 0 01-3 3H6a3 3 0 00-3 3v6z"/>
                             </svg>
                         </div>
-                        <h4 class="text-xl font-semibold text-white mb-2">Sin Intervenciones</h4>
-                        <p class="text-gray-400">Este couder no tiene intervenciones registradas</p>
+                        <h4 class="text-xl font-semibold text-white mb-2">No Interventions</h4>
+                        <p class="text-gray-400">This couder has no registered interventions</p>
                     </div>
                 ` : `
                     <div class="space-y-4">
@@ -356,16 +366,16 @@ const SearchView = (() => {
                             <div class="bg-gray-700/50 backdrop-blur-sm rounded-lg p-4 border border-gray-600/50 group/item hover:bg-gray-700/70 transition-all" style="animation-delay: ${idx * 100}ms">
                                 <div class="flex items-start justify-between">
                                     <div>
-                                        <h5 class="text-lg font-semibold text-white mb-2 group/item:text-blue-300 transition-colors">${intervention.intervention_type || 'Intervención'}</h5>
+                                        <h5 class="text-lg font-semibold text-white mb-2 group/item:text-blue-300 transition-colors">${intervention.intervention_type || 'Intervention'}</h5>
                                         <p class="text-gray-400 text-sm">${new Date(intervention.session_date).toLocaleDateString()}</p>
                                     </div>
                                     <div class="bg-blue-600/80 backdrop-blur-sm px-3 py-1 rounded-full group/item:scale-110 transition-transform">
-                                        <span class="text-white text-xs font-medium">Registrada</span>
+                                        <span class="text-white text-xs font-medium">Registered</span>
                                     </div>
                                 </div>
                                 
                                 <div class="mt-3">
-                                    <p class="text-gray-300">${intervention.notes || 'Sin notas'}</p>
+                                    <p class="text-gray-300">${intervention.notes || 'No notes'}</p>
                                 </div>
                             </div>
                         `).join('')}
@@ -373,7 +383,7 @@ const SearchView = (() => {
                         ${_interventions.length > 5 ? `
                             <div class="text-center pt-4">
                                 <button onclick="Router.navigate('couder', { cc: '${_currentCouder.national_id}' })" class="text-blue-400 hover:text-blue-300 transition-colors">
-                                    Ver ${_interventions.length - 5} intervenciones más →
+                                    View ${_interventions.length - 5} more interventions →
                                 </button>
                             </div>
                         ` : ''}
@@ -396,14 +406,14 @@ const SearchView = (() => {
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                     </svg>
                 </div>
-                <h3 class="text-xl font-semibold text-yellow-400 mb-2">Couder No Encontrado</h3>
-                <p class="text-gray-400">No se encontró ningún couder con la cédula: <span class="font-mono bg-gray-700/50 px-2 py-1 rounded">${searchTerm}</span></p>
+                <h3 class="text-xl font-semibold text-yellow-400 mb-2">Couder Not Found</h3>
+                <p class="text-gray-400">No couder found with ID: <span class="font-mono bg-gray-700/50 px-2 py-1 rounded">${searchTerm}</span></p>
                 <div class="mt-6 space-y-2 text-sm text-gray-500">
-                    <p>Verifica que:</p>
+                    <p>Verify that:</p>
                     <ul class="list-disc list-inside space-y-1">
-                        <li>El número de cédula esté escrito correctamente</li>
-                        <li>El couder esté registrado en el sistema</li>
-                        <li>No tengas espacios adicionales</li>
+                        <li>The ID number is written correctly</li>
+                        <li>The couder is registered in the system</li>
+                        <li>No additional spaces</li>
                     </ul>
                 </div>
             </div>
@@ -420,8 +430,8 @@ const SearchView = (() => {
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                     </svg>
                 </div>
-                <h3 class="text-xl font-semibold text-gray-300 mb-2">Busca un Couder</h3>
-                <p class="text-gray-500">Ingresa un número de cédula para buscar información del couder</p>
+                <h3 class="text-xl font-semibold text-gray-300 mb-2">Search for a Couder</h3>
+                <p class="text-gray-500">Enter a national ID number to search for couder information</p>
             </div>
         `;
     }
@@ -439,7 +449,7 @@ const SearchView = (() => {
                 <h3 class="text-xl font-semibold text-red-400 mb-2">Error</h3>
                 <p class="text-gray-400 mb-4">${message}</p>
                 <button onclick="location.reload()" class="bg-red-600 hover:bg-red-700 px-6 py-3 rounded-lg transition-all hover:scale-105 transform">
-                    Reintentar
+                    Retry
                 </button>
             </div>
         `;

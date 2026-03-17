@@ -13,6 +13,9 @@ const RegisterView = (() => {
             return;
         }
 
+        // Simple clear - just empty the app
+        app.innerHTML = '';
+
         app.innerHTML = `
             <div class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white flex items-center justify-center">
                 <!-- Animated Background Elements -->
@@ -36,14 +39,36 @@ const RegisterView = (() => {
                                     </svg>
                                 </div>
                                 <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">DataCore</h1>
-                                <p class="text-gray-400">Registro de Nuevo Interventor</p>
+                                <p class="text-gray-400">Register New Interventor</p>
+                            </div>
+
+                            <!-- Auth Toggle Button -->
+                            <div class="auth-toggle-container">
+                                <div class="bg-gray-700/50 backdrop-blur-sm rounded-lg p-1 flex">
+                                    <button 
+                                        type="button" 
+                                        id="login-tab"
+                                        class="auth-tab flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all duration-200 text-gray-400 hover:text-white"
+                                        data-view="login"
+                                    >
+                                        Sign In
+                                    </button>
+                                    <button 
+                                        type="button" 
+                                        id="register-tab"
+                                        class="auth-tab flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all duration-200 bg-blue-600 text-white"
+                                        data-view="register"
+                                    >
+                                        Register
+                                    </button>
+                                </div>
                             </div>
 
                             <!-- Register Form -->
                             <form id="register-form" class="space-y-6">
                                 <!-- Full Name Field -->
                                 <div>
-                                    <label class="block text-gray-300 mb-2 text-sm font-medium">Nombre Completo</label>
+                                    <label class="block text-gray-300 mb-2 text-sm font-medium">Full Name</label>
                                     <div class="relative group">
                                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                             <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -63,7 +88,7 @@ const RegisterView = (() => {
 
                                 <!-- Email Field -->
                                 <div>
-                                    <label class="block text-gray-300 mb-2 text-sm font-medium">Email Institucional</label>
+                                    <label class="block text-gray-300 mb-2 text-sm font-medium">Institutional Email</label>
                                     <div class="relative group">
                                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                             <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -83,7 +108,7 @@ const RegisterView = (() => {
                                 
                                 <!-- Password Field -->
                                 <div>
-                                    <label class="block text-gray-300 mb-2 text-sm font-medium">Contraseña</label>
+                                    <label class="block text-gray-300 mb-2 text-sm font-medium">Password</label>
                                     <div class="relative group">
                                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                             <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -95,7 +120,7 @@ const RegisterView = (() => {
                                             id="password" 
                                             name="password"
                                             class="w-full bg-gray-700/50 backdrop-blur-sm border border-gray-600 rounded-lg px-4 py-3 pl-12 text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
-                                            placeholder="Mínimo 8 caracteres"
+                                            placeholder="Minimum 8 characters"
                                             required
                                             minlength="8"
                                         >
@@ -104,7 +129,7 @@ const RegisterView = (() => {
 
                                 <!-- Confirm Password Field -->
                                 <div>
-                                    <label class="block text-gray-300 mb-2 text-sm font-medium">Confirmar Contraseña</label>
+                                    <label class="block text-gray-300 mb-2 text-sm font-medium">Confirm Password</label>
                                     <div class="relative group">
                                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                             <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -116,7 +141,7 @@ const RegisterView = (() => {
                                             id="confirmPassword" 
                                             name="confirmPassword"
                                             class="w-full bg-gray-700/50 backdrop-blur-sm border border-gray-600 rounded-lg px-4 py-3 pl-12 text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
-                                            placeholder="Repite la contraseña"
+                                            placeholder="Repeat password"
                                             required
                                             minlength="8"
                                         >
@@ -136,7 +161,7 @@ const RegisterView = (() => {
                                         required
                                     >
                                     <label for="terms" class="ml-2 text-sm text-gray-300 cursor-pointer hover:text-white transition-colors">
-                                        Acepto los términos y condiciones de uso del sistema DataCore
+                                        I accept the terms and conditions of use of the DataCore system
                                     </label>
                                 </div>
 
@@ -146,7 +171,7 @@ const RegisterView = (() => {
                                     id="register-btn"
                                     class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500/50 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
                                 >
-                                    <span id="btn-text">Registrarse</span>
+                                    <span id="btn-text">Register</span>
                                     <svg id="btn-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
                                     </svg>
@@ -156,9 +181,9 @@ const RegisterView = (() => {
                             <!-- Back to Login -->
                             <div class="mt-6 text-center">
                                 <p class="text-gray-400 text-sm">
-                                    ¿Ya tienes cuenta? 
+                                    Already have an account? 
                                     <button onclick="Router.navigate('login')" class="text-blue-400 hover:text-blue-300 font-medium transition-colors">
-                                        Inicia Sesión
+                                        Sign In
                                     </button>
                                 </p>
                             </div>
@@ -170,12 +195,12 @@ const RegisterView = (() => {
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                     </svg>
                                     <div class="text-sm">
-                                        <p class="text-blue-300 font-medium mb-1">Requisitos del Registro:</p>
+                                        <p class="text-blue-300 font-medium mb-1">Registration Requirements:</p>
                                         <ul class="text-gray-400 space-y-1">
-                                            <li>• Nombre completo del interventor</li>
-                                            <li>• Email institucional válido</li>
-                                            <li>• Contraseña mínima de 8 caracteres</li>
-                                            <li>• Aceptar términos y condiciones</li>
+                                            <li>• Full name of the interventor</li>
+                                            <li>• Valid institutional email</li>
+                                            <li>• Password minimum 8 characters</li>
+                                            <li>• Accept terms and conditions</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -200,12 +225,36 @@ const RegisterView = (() => {
         // Add input focus effects
         _addInputEffects();
         
-        // Add password confirmation validation
-        _addPasswordValidation();
+        // Set up toggle tabs
+        _setupToggleTabs();
+    }
+
+    function _setupToggleTabs() {
+        const loginTab = document.getElementById('login-tab');
+        const registerTab = document.getElementById('register-tab');
+        
+        if (!loginTab || !registerTab) {
+            console.error('Toggle tabs not found');
+            return;
+        }
+        
+        // Event listener for Login tab
+        loginTab.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            Router.navigate('login');
+        });
+        
+        // Event listener for Register tab
+        registerTab.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            Router.navigate('register');
+        });
     }
 
     function _addInputEffects() {
-        const inputs = document.querySelectorAll('input[type="text"], input[type="email"], input[type="password"]');
+        const inputs = document.querySelectorAll('input[type="email"], input[type="password"], input[type="text"]');
         inputs.forEach(input => {
             input.addEventListener('focus', () => {
                 input.parentElement.parentElement.classList.add('ring-2', 'ring-blue-500/50');
@@ -223,7 +272,7 @@ const RegisterView = (() => {
         if (password && confirmPassword) {
             confirmPassword.addEventListener('input', () => {
                 if (confirmPassword.value && password.value !== confirmPassword.value) {
-                    confirmPassword.setCustomValidity('Las contraseñas no coinciden');
+                    confirmPassword.setCustomValidity('Passwords do not match');
                 } else {
                     confirmPassword.setCustomValidity('');
                 }
@@ -231,7 +280,7 @@ const RegisterView = (() => {
             
             password.addEventListener('input', () => {
                 if (confirmPassword.value && password.value !== confirmPassword.value) {
-                    confirmPassword.setCustomValidity('Las contraseñas no coinciden');
+                    confirmPassword.setCustomValidity('Passwords do not match');
                 } else {
                     confirmPassword.setCustomValidity('');
                 }
@@ -258,34 +307,34 @@ const RegisterView = (() => {
         
         // Validate inputs
         if (!fullName || !email || !password || !confirmPassword) {
-            _showStatus('error', 'Por favor complete todos los campos');
+            _showStatus('error', 'Please complete all fields');
             return;
         }
         
         if (password !== confirmPassword) {
-            _showStatus('error', 'Las contraseñas no coinciden');
+            _showStatus('error', 'Passwords do not match');
             return;
         }
         
         if (password.length < 8) {
-            _showStatus('error', 'La contraseña debe tener al menos 8 caracteres');
+            _showStatus('error', 'Password must be at least 8 characters');
             return;
         }
         
         if (!terms) {
-            _showStatus('error', 'Debe aceptar los términos y condiciones');
+            _showStatus('error', 'You must accept the terms and conditions');
             return;
         }
         
         if (!email.includes('@')) {
-            _showStatus('error', 'Por favor ingrese un email válido');
+            _showStatus('error', 'Please enter a valid email');
             return;
         }
         
         // Show loading state
         _isLoading = true;
         btn.disabled = true;
-        btnText.textContent = 'Registrando...';
+        btnText.textContent = 'Registering...';
         btnIcon.innerHTML = `
             <svg class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
@@ -310,10 +359,10 @@ const RegisterView = (() => {
             const data = await response.json();
             
             if (!response.ok) {
-                throw new Error(data.error || 'Error al registrar usuario');
+                throw new Error(data.error || 'Error registering user');
             }
             
-            _showStatus('success', '¡Registro exitoso! Redirigiendo al login...');
+            _showStatus('success', 'Registration successful! Redirecting to login...');
             
             // Redirect to login after successful registration
             setTimeout(() => {
@@ -322,12 +371,12 @@ const RegisterView = (() => {
             
         } catch (error) {
             console.error('Register error:', error);
-            _showStatus('error', error.message || 'Error al registrar usuario');
+            _showStatus('error', error.message || 'Error registering user');
         } finally {
             // Reset button state
             _isLoading = false;
             btn.disabled = false;
-            btnText.textContent = 'Registrarse';
+            btnText.textContent = 'Register';
             btnIcon.innerHTML = `
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>

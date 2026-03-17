@@ -10,11 +10,14 @@ const DashboardView = (() => {
 
     async function render(params) {
         try {
+            console.log('DashboardView.render called with params:', params);
             const app = document.getElementById('app');
             if (!app) {
                 console.error('App element not found');
                 return;
             }
+
+            console.log('Clearing app and rendering dashboard...');
 
             app.innerHTML = `
                 <div class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
@@ -41,7 +44,7 @@ const DashboardView = (() => {
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                                         </svg>
-                                        Búsqueda
+                                        Search
                                     </span>
                                 </button>
                             </div>
@@ -50,13 +53,13 @@ const DashboardView = (() => {
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                                     </svg>
-                                    Actualizar
+                                    Refresh
                                 </button>
                                 <button onclick="Auth.logout()" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition-all hover:scale-105 transform flex items-center gap-2">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                                     </svg>
-                                    Cerrar Sesión
+                                    Logout
                                 </button>
                             </div>
                         </div>
@@ -72,8 +75,8 @@ const DashboardView = (() => {
                                     </div>
                                     <div class="absolute inset-0 w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 animate-ping opacity-20"></div>
                                 </div>
-                                <h2 class="text-xl font-semibold text-white mb-2">Cargando Dashboard...</h2>
-                                <p class="text-gray-400">Obteniendo datos del sistema en tiempo real</p>
+                                <h2 class="text-xl font-semibold text-white mb-2">Loading Dashboard...</h2>
+                                <p class="text-gray-400">Getting real-time system data</p>
                             </div>
                         </div>
                     </div>
@@ -83,10 +86,18 @@ const DashboardView = (() => {
             // Load real dashboard data
             console.log('Fetching dashboard data...');
             const data = await Api.get('/dashboard');
-            console.log('Dashboard data received:', data);
-            _globalData = data.global || {};
-            _sedeData = data.sedes || [];
-            renderContent(data);
+            console.log('Raw dashboard data received:', data);
+            
+            // Apply data mapping for consistency
+            const mappedData = {
+                global: TranslationHelper.mapBackendToFrontend(data.global || {}),
+                sedes: TranslationHelper.mapArray(data.sedes || [])
+            };
+            console.log('Mapped dashboard data:', mappedData);
+            
+            _globalData = mappedData.global;
+            _sedeData = mappedData.sedes;
+            renderContent(mappedData);
 
             // Setup auto-refresh
             _setupAutoRefresh();
@@ -103,10 +114,10 @@ const DashboardView = (() => {
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                 </svg>
                             </div>
-                            <h2 class="text-2xl font-bold text-red-400 mb-4">Error al cargar Dashboard</h2>
+                            <h2 class="text-2xl font-bold text-red-400 mb-4">Error Loading Dashboard</h2>
                             <p class="text-gray-400 mb-6">${error.message}</p>
                             <button onclick="location.reload()" class="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-6 py-3 rounded-lg transition-all hover:scale-105 transform">
-                                Reintentar
+                                Retry
                             </button>
                         </div>
                     </div>
@@ -121,7 +132,7 @@ const DashboardView = (() => {
         console.log('Sedes data:', sedes);
         console.log('========================');
 
-        // Guardar datos globales para uso en otras funciones
+        // Save global data for use in other functions
         _globalData = global || {};
         _sedeData = sedes || [];
 
@@ -134,7 +145,7 @@ const DashboardView = (() => {
         content.innerHTML = `
         <!-- Animated Global KPIs -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="group relative overflow-hidden bg-gradient-to-br from-orange-500 to-red-600 rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 cursor-pointer" onclick="DashboardView._showKpiDetails('total')">
+            <div class="group relative overflow-hidden bg-gradient-to-br from-orange-500 to-red-600 rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 cursor-pointer" onclick="DashboardView._showKpioftails('TOTAL')">
                 <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
                 <div class="relative z-10">
                     <div class="flex items-center gap-3 mb-3">
@@ -143,14 +154,14 @@ const DashboardView = (() => {
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0"/>
                             </svg>
                         </div>
-                        <span class="text-white font-medium">Total Couders</span>
+                        <span class="text-white font-medium">TOTAL Couders</span>
                     </div>
-                    <div class="text-4xl font-bold text-white mb-2">${global?.total || 0}</div>
-                    <div class="text-orange-100 text-sm">Click para detalles</div>
+                    <div class="text-4xl font-bold text-white mb-2">${global?.TOTAL || 0}</div>
+                    <div class="text-orange-100 text-sm">Click for details</div>
                 </div>
             </div>
 
-            <div class="group relative overflow-hidden bg-gradient-to-br from-gray-500 to-gray-600 rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 cursor-pointer" onclick="DashboardView._showKpiDetails('withdrawn')">
+            <div class="group relative overflow-hidden bg-gradient-to-br from-gray-500 to-gray-600 rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 cursor-pointer" onclick="DashboardView._showKpioftails('withdrawn')">
                 <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
                 <div class="relative z-10">
                     <div class="flex items-center gap-3 mb-3">
@@ -159,14 +170,14 @@ const DashboardView = (() => {
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                             </svg>
                         </div>
-                        <span class="text-white font-medium">Retirados</span>
+                        <span class="text-white font-medium">Withdrawn</span>
                     </div>
                     <div class="text-4xl font-bold text-white mb-2">${global?.withdrawn || 0}</div>
-                    <div class="text-gray-100 text-sm">Click para detalles</div>
+                    <div class="text-gray-100 text-sm">Click for details</div>
                 </div>
             </div>
 
-            <div class="group relative overflow-hidden bg-gradient-to-br from-green-500 to-teal-600 rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 cursor-pointer" onclick="DashboardView._showKpiDetails('active')">
+            <div class="group relative overflow-hidden bg-gradient-to-br from-green-500 to-teal-600 rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 cursor-pointer" onclick="DashboardView._showKpioftails('active')">
                 <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
                 <div class="relative z-10">
                     <div class="flex items-center gap-3 mb-3">
@@ -175,10 +186,10 @@ const DashboardView = (() => {
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
                             </svg>
                         </div>
-                        <span class="text-white font-medium">Activos</span>
+                        <span class="text-white font-medium">Active</span>
                     </div>
                     <div class="text-4xl font-bold text-white mb-2">${global?.active || 0}</div>
-                    <div class="text-green-100 text-sm">Click para detalles</div>
+                    <div class="text-green-100 text-sm">Click for oftails</div>
                 </div>
             </div>
         </div>
@@ -192,21 +203,21 @@ const DashboardView = (() => {
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                         </svg>
                     </div>
-                    <h2 class="text-2xl font-bold text-white">Sedes</h2>
-                    <span class="bg-blue-600/20 text-blue-400 px-3 py-1 rounded-full text-sm">${sedes?.length || 0} sedes</span>
+                    <h2 class="text-2xl font-bold text-white">Locations</h2>
+                    <span class="bg-blue-600/20 text-blue-400 px-3 py-1 rounded-full text-sm">${sedes?.length || 0} locations</span>
                 </div>
                 <div class="flex gap-2">
                     <button onclick="DashboardView._sortSedes('name')" class="text-gray-400 hover:text-white transition-colors px-3 py-2 rounded-lg hover:bg-gray-700/50">
                         <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"/>
                         </svg>
-                        Ordenar
+                        Sort
                     </button>
                     <button onclick="DashboardView._refreshData()" class="text-gray-400 hover:text-white transition-colors px-3 py-2 rounded-lg hover:bg-gray-700/50">
                         <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                         </svg>
-                        Actualizar
+                        Refresh
                     </button>
                 </div>
             </div>
@@ -221,26 +232,26 @@ const DashboardView = (() => {
                 <div class="relative z-10">
                     <div class="flex items-start justify-between mb-4">
                         <div>
-                            <h3 class="text-xl font-bold text-white mb-2 group-hover:text-purple-300 transition-colors">${sede.name || 'Sede'}</h3>
-                            <p class="text-gray-400 text-sm">Atendidos: ${sede.attendancePercent || 0}%</p>
+                            <h3 class="text-xl font-bold text-white mb-2 group-hover:text-purple-300 transition-colors">${sede.name || 'Location'}</h3>
+                            <p class="text-gray-400 text-sm">Attended: ${sede.attendancePercent || 0}%</p>
                         </div>
                         <div class="bg-purple-600/80 backdrop-blur-sm px-3 py-1 rounded-full group-hover:scale-110 transition-transform">
-                            <span class="text-white text-xs font-medium">${sede.attended || 0} atendidos</span>
+                            <span class="text-white text-xs font-medium">${sede.attended || 0} attended</span>
                         </div>
                     </div>
                     
                     <div class="grid grid-cols-3 gap-4">
                         <div class="text-center">
-                            <div class="text-2xl font-bold text-blue-300">${sede.total || 0}</div>
-                            <div class="text-xs text-gray-400">Total</div>
+                            <div class="text-2xl font-bold text-blue-300">${sede.TOTAL || 0}</div>
+                            <div class="text-xs text-gray-400">TOTAL</div>
                         </div>
                         <div class="text-center">
                             <div class="text-2xl font-bold text-red-300">${sede.withdrawn || 0}</div>
-                            <div class="text-xs text-gray-400">Retirados</div>
+                            <div class="text-xs text-gray-400">Withdrawn</div>
                         </div>
                         <div class="text-center">
                             <div class="text-2xl font-bold text-green-300">${sede.completed || 0}</div>
-                            <div class="text-xs text-gray-400">Completaron</div>
+                            <div class="text-xs text-gray-400">Completed</div>
                         </div>
                     </div>
                 </div>
@@ -252,8 +263,8 @@ const DashboardView = (() => {
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                     </svg>
                 </div>
-                <h3 class="text-xl font-semibold text-gray-300 mb-2">No hay sedes registradas</h3>
-                <p class="text-gray-500">No se encontraron sedes en el sistema</p>
+                <h3 class="text-xl font-semibold text-gray-300 mb-2">No registered locations</h3>
+                <p class="text-gray-500">No locations found in the system</p>
             </div>
             `}
         </div>
@@ -271,11 +282,11 @@ const DashboardView = (() => {
         console.log('Adding click listeners to', cards.length, 'sede cards');
         cards.forEach(card => {
             const sedeId = card.getAttribute('data-sede-id');
-            card.onclick = function(e) {
+            card.addEventListener('click', function(e) {
                 console.log('Sede card clicked:', sedeId);
-                window.location.hash = '#sede?id=' + sedeId;
+                Router.navigate('sede', { id: sedeId });
                 return false;
-            };
+            });
         });
     }
 
@@ -296,9 +307,16 @@ const DashboardView = (() => {
                 
                 console.log('Auto-refreshing dashboard...');
                 const data = await Api.get('/dashboard');
-                _globalData = data.global || {};
-                _sedeData = data.sedes || [];
-                renderContent(data);
+                
+                // Apply data mapping for consistency
+                const mappedData = {
+                    global: TranslationHelper.mapBackendToFrontend(data.global || {}),
+                    sedes: TranslationHelper.mapArray(data.sedes || [])
+                };
+                
+                _globalData = mappedData.global;
+                _sedeData = mappedData.sedes;
+                renderContent(mappedData);
             } catch (error) {
                 console.error('Auto-refresh error:', error);
             }
@@ -323,19 +341,26 @@ const DashboardView = (() => {
         const originalContent = btn ? btn.innerHTML : '';
         
         if (btn) {
-            btn.innerHTML = '<div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div> Actualizando...';
+            btn.innerHTML = '<div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div> Updating...';
             btn.disabled = true;
         }
         
         try {
             const data = await Api.get('/dashboard');
-            _globalData = data.global || {};
-            _sedeData = data.sedes || [];
-            renderContent(data);
+            
+            // Apply data mapping for consistency
+            const mappedData = {
+                global: TranslationHelper.mapBackendToFrontend(data.global || {}),
+                sedes: TranslationHelper.mapArray(data.sedes || [])
+            };
+            
+            _globalData = mappedData.global;
+            _sedeData = mappedData.sedes;
+            renderContent(mappedData);
             
             // Show success feedback
             if (btn) {
-                btn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Actualizado';
+                btn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Updated';
                 setTimeout(() => {
                     btn.innerHTML = originalContent;
                     btn.disabled = false;
@@ -352,9 +377,9 @@ const DashboardView = (() => {
 
     function _showKpiDetails(kpiType) {
         const kpiTitles = {
-            total: 'Total de Couders',
-            withdrawn: 'Couders Retirados',
-            active: 'Couders Activos'
+            TOTAL: 'TOTAL of Couders',
+            withdrawn: 'Couders Withdrawn',
+            active: 'Couders Active'
         };
         
         // Create modal overlay
@@ -364,14 +389,14 @@ const DashboardView = (() => {
             <div class="bg-gray-800 rounded-xl p-8 max-w-md w-full mx-4 border border-gray-700 transform scale-95 opacity-0 transition-all">
                 <h3 class="text-2xl font-bold text-white mb-4">${kpiTitles[kpiType]}</h3>
                 <div class="text-gray-300 mb-6">
-                    <p>Información detallada sobre ${kpiTitles[kpiType].toLowerCase()} en el sistema.</p>
+                    <p>Detailed information about ${kpiTitles[kpiType].toLowerCase()} in the system.</p>
                     <div class="mt-4 p-4 bg-gray-700/50 rounded-lg">
-                        <div class="text-sm text-gray-400">Última actualización:</div>
-                        <div class="text-white">${new Date().toLocaleString('es-CO')}</div>
+                        <div class="text-sm text-gray-400">Last update:</div>
+                        <div class="text-white">${new Date().toLocaleString('en-US')}</div>
                     </div>
                 </div>
                 <button onclick="this.closest('.fixed').remove()" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-lg transition-colors">
-                    Cerrar
+                    Close
                 </button>
             </div>
         `;
@@ -404,7 +429,7 @@ const DashboardView = (() => {
         const btn = event?.target?.closest('button');
         if (btn) {
             const originalText = btn.innerHTML;
-            btn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Ordenado';
+            btn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Sorted';
             setTimeout(() => {
                 btn.innerHTML = originalText;
             }, 1000);

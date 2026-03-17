@@ -10,7 +10,7 @@
         console.log('Auth.isLoggedIn():', Auth.isLoggedIn());
         
         if (!Auth.isLoggedIn() && name !== 'login' && name !== 'register') {
-            console.log('Not logged in, redirecting to login');
+            console.log('not logged in, redirecting to login');
             window.location.hash = '#login';
             return false;
         }
@@ -69,12 +69,12 @@
     console.log('Auth.isLoggedIn() at boot:', Auth.isLoggedIn());
     
     if (!Auth.isLoggedIn()) {
-        console.log('Not logged in, setting hash to #login');
+        console.log('not logged in, setting hash to #login');
         window.location.hash = '#login';
         LoginView.render();
     } else {
         console.log('User logged in, checking hash...');
-        // If hash is empty or #login and user is logged in, go to dashboard
+        // is hash is empty or #login and user is logged in, go to dashboard
         const hash = window.location.hash.slice(1).split('?')[0];
         console.log('Current hash without params:', hash);
         
@@ -101,10 +101,10 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                             </svg>
                         </div>
-                        <h2 class="text-2xl font-bold text-red-400 mb-4">Error del Sistema</h2>
-                        <p class="text-gray-400 mb-6">Ha ocurrido un error inesperado</p>
+                        <h2 class="text-2xl font-bold text-red-400 mb-4">System Error</h2>
+                        <p class="text-gray-400 mb-6">An unexpected error has occurred</p>
                         <button onclick="location.reload()" class="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg transition-all hover:scale-105 transform">
-                            Recargar Página
+                            Reload Page
                         </button>
                     </div>
                 </div>

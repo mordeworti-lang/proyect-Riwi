@@ -48,13 +48,13 @@ const ClanView = (() => {
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                                     </svg>
-                                    Actualizar
+                                    Update
                                 </button>
                                 <button onclick="Auth.logout()" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition-all hover:scale-105 transform flex items-center gap-2">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                                     </svg>
-                                    Cerrar Sesión
+                                    Logout
                                 </button>
                             </div>
                         </div>
@@ -70,8 +70,8 @@ const ClanView = (() => {
                                     </div>
                                     <div class="absolute inset-0 w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 animate-ping opacity-20"></div>
                                 </div>
-                                <h2 class="text-xl font-semibold text-white mb-2">Cargando Clan...</h2>
-                                <p class="text-gray-400">Obteniendo información del clan y couders</p>
+                                <h2 class="text-xl font-semibold text-white mb-2">Loading Clan...</h2>
+                                <p class="text-gray-400">Getting clan information and couders</p>
                             </div>
                         </div>
                     </div>
@@ -81,10 +81,18 @@ const ClanView = (() => {
             // Load clan data
             console.log('Fetching clan data for ID:', clanId);
             const data = await Api.get(`/dashboard/clans/${clanId}`);
-            console.log('Clan data received:', data);
-            _clanData = data.clan;
-            _coudersData = data.couders || [];
-            renderContent(data);
+            console.log('Raw clan data received:', data);
+            
+            // Apply data mapping for consistency
+            const mappedData = {
+                clan: TranslationHelper.mapBackendToFrontend(data.clan || {}),
+                couders: TranslationHelper.mapArray(data.couders || [])
+            };
+            console.log('Mapped clan data:', mappedData);
+            
+            _clanData = mappedData.clan;
+            _coudersData = mappedData.couders;
+            renderContent(mappedData);
 
         } catch (error) {
             console.error('Clan error:', error);
@@ -98,10 +106,10 @@ const ClanView = (() => {
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                 </svg>
                             </div>
-                            <h2 class="text-2xl font-bold text-red-400 mb-4">Error al cargar Clan</h2>
+                            <h2 class="text-2xl font-bold text-red-400 mb-4">Error loading Clan</h2>
                             <p class="text-gray-400 mb-6">${error.message}</p>
                             <button onclick="Router.navigate('cohort')" class="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-6 py-3 rounded-lg transition-all hover:scale-105 transform">
-                                Volver a Cohort
+                                Return to Cohort
                             </button>
                         </div>
                     </div>
@@ -112,13 +120,20 @@ const ClanView = (() => {
 
     function renderContent({ clan, couders }) {
         console.log('=== RENDERING CLAN ===');
-        console.log('Clan data:', clan);
-        console.log('Couders data:', couders);
+        console.log('Raw Clan data:', clan);
+        console.log('Raw Couders data:', couders);
         console.log('=====================');
 
-        // Guardar datos para uso en otras funciones
-        _clanData = clan || {};
-        _coudersData = couders || [];
+        // Apply data mapping for consistency
+        const mappedClan = TranslationHelper.mapBackendToFrontend(clan || {});
+        const mappedCouders = TranslationHelper.mapArray(couders || []);
+        
+        console.log('Mapped Clan data:', mappedClan);
+        console.log('Mapped Couders data:', mappedCouders);
+
+        // Save data for use in other functions
+        _clanData = mappedClan;
+        _coudersData = mappedCouders;
 
         const content = document.getElementById('clan-content');
         if (!content) {
@@ -129,11 +144,11 @@ const ClanView = (() => {
         content.innerHTML = `
             <!-- Back Button -->
             <div class="mb-6">
-                <button onclick="Router.navigate('cohort', { id: ${clan.cohort_id} })" class="bg-gray-700/50 backdrop-blur-sm hover:bg-gray-700/70 px-4 py-2 rounded-lg transition-all hover:scale-105 transform flex items-center gap-2">
+                <button onclick="Router.navigate('cohort', { id: ${mappedClan.cohort_id} })" class="bg-gray-700/50 backdrop-blur-sm hover:bg-gray-700/70 px-4 py-2 rounded-lg transition-all hover:scale-105 transform flex items-center gap-2">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                     </svg>
-                    Volver al Cohort
+                    Back to Cohort
                 </button>
             </div>
 
@@ -147,16 +162,16 @@ const ClanView = (() => {
                             </svg>
                         </div>
                         <div>
-                            <h2 class="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">${clan.name || 'Clan'}</h2>
-                            <p class="text-gray-400 text-lg">ID: ${clan.id}</p>
+                            <h2 class="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">${mappedClan.name || 'Clan'}</h2>
+                            <p class="text-gray-400 text-lg">ID: ${mappedClan.id}</p>
                         </div>
                     </div>
                     <div class="flex items-center gap-3">
                         <div class="bg-blue-600/80 backdrop-blur-sm px-4 py-2 rounded-lg">
-                            <span class="text-white font-medium">${couders?.length || 0} couders</span>
+                            <span class="text-white font-medium">${mappedCouders?.length || 0} couders</span>
                         </div>
                         <div class="bg-green-600/80 backdrop-blur-sm px-4 py-2 rounded-lg">
-                            <span class="text-white font-medium">${clan.avgScore || 0} avg score</span>
+                            <span class="text-white font-medium">${mappedClan.avgScore || 0} avg score</span>
                         </div>
                     </div>
                 </div>
@@ -178,20 +193,20 @@ const ClanView = (() => {
                         <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"/>
                         </svg>
-                        Ordenar
+                        Sort
                     </button>
                     <button onclick="ClanView._filterCouders('all')" class="text-gray-400 hover:text-white transition-colors px-3 py-2 rounded-lg hover:bg-gray-700/50">
                         <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
                         </svg>
-                        Filtrar
+                        Filter
                     </button>
                 </div>
             </div>
 
             <!-- Couders Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                ${couders?.map((couder, idx) => `
+                ${mappedCouders?.map((couder, idx) => `
                 <div class="couder-card group bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 hover:border-purple-600/50 transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer relative" 
                      data-couder-cc="${couder.national_id}"
                      style="animation-delay: ${idx * 100}ms">
@@ -209,12 +224,12 @@ const ClanView = (() => {
                         
                         <div class="grid grid-cols-2 gap-4 mt-2">
                             <div class="text-center bg-gray-700/40 rounded-lg py-2">
-                                <div class="text-sm font-semibold ${couder.status === 'active' ? 'text-green-300' : couder.status === 'completed' ? 'text-blue-300' : 'text-red-300'}">${couder.status === 'active' ? 'Activo' : couder.status === 'completed' ? 'Completado' : 'Retirado'}</div>
-                                <div class="text-xs text-gray-400">Estado</div>
+                                <div class="text-sm font-semibold ${couder.status === 'active' ? 'text-green-300' : couder.status === 'completed' ? 'text-blue-300' : 'text-red-300'}">${couder.status === 'active' ? 'Active' : couder.status === 'completed' ? 'Completed' : 'Withdrawn'}</div>
+                                <div class="text-xs text-gray-400">State</div>
                             </div>
                             <div class="text-center bg-gray-700/40 rounded-lg py-2">
                                 <div class="text-sm font-semibold text-orange-300">${couder.average_score || '—'}</div>
-                                <div class="text-xs text-gray-400">Puntaje</div>
+                                <div class="text-xs text-gray-400">Score</div>
                             </div>
                         </div>
                     </div>
@@ -226,8 +241,8 @@ const ClanView = (() => {
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0"/>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-300 mb-2">No hay couders registrados</h3>
-                    <p class="text-gray-500">No se encontraron couders en este clan</p>
+                    <h3 class="text-xl font-semibold text-gray-300 mb-2">No registered couders</h3>
+                    <p class="text-gray-500">No couders found in this clan</p>
                 </div>
                 `}
             </div>
@@ -249,7 +264,7 @@ const ClanView = (() => {
                 console.log('Couder card clicked:', couderCc);
                 e.preventDefault();
                 e.stopPropagation();
-                window.location.hash = '#couder?cc=' + encodeURIComponent(couderCc);
+                Router.navigate('couder', { cc: couderCc });
             });
         });
     }
@@ -272,19 +287,28 @@ const ClanView = (() => {
         const originalContent = btn ? btn.innerHTML : '';
         
         if (btn) {
-            btn.innerHTML = '<div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div> Actualizando...';
+            btn.innerHTML = '<div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div> Updating...';
             btn.disabled = true;
         }
         
         try {
             const data = await Api.get(`/dashboard/clans/${_clanData.id}`);
-            _clanData = data.clan;
-            _coudersData = data.couders || [];
-            renderContent(data);
+            console.log('Raw refresh data:', data);
+            
+            // Apply data mapping for consistency
+            const mappedData = {
+                clan: TranslationHelper.mapBackendToFrontend(data.clan || {}),
+                couders: TranslationHelper.mapArray(data.couders || [])
+            };
+            console.log('Mapped refresh data:', mappedData);
+            
+            _clanData = mappedData.clan;
+            _coudersData = mappedData.couders;
+            renderContent(mappedData);
             
             // Show success feedback
             if (btn) {
-                btn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Actualizado';
+                btn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Updated';
                 setTimeout(() => {
                     btn.innerHTML = originalContent;
                     btn.disabled = false;
@@ -311,7 +335,7 @@ const ClanView = (() => {
         const btn = event?.target?.closest('button');
         if (btn) {
             const originalText = btn.innerHTML;
-            btn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Ordenado';
+            btn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Orofnado';
             setTimeout(() => {
                 btn.innerHTML = originalText;
             }, 1000);
@@ -319,7 +343,7 @@ const ClanView = (() => {
     }
 
     function _filterCouders(filter) {
-        // For now, just show all couders
+        // For Now, just show all couders
         renderContent({ clan: _clanData, couders: _coudersData });
         
         // Show feedback

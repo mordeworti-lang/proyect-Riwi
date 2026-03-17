@@ -11,7 +11,7 @@ const Navbar = (() => {
             console.log('User found:', user);
         } catch (error) {
             console.error('Error getting user in Navbar:', error);
-            user = { fullName: 'Usuario' }; // fallback
+            user = { fullName: 'User' }; // fallback
         }
         
         return `
@@ -34,7 +34,7 @@ const Navbar = (() => {
                             </svg>
                             <input id="global-search-input"
                                    type="text"
-                                   placeholder="Buscar Couder por CC..."
+                                   placeholder="Search Couder by CC..."
                                    class="bg-transparent text-sm text-white placeholder-gray-400 outline-none w-48" />
                         </div>
                         <button id="navbar-dashboard"

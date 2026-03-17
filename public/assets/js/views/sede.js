@@ -17,7 +17,7 @@ const SedeView = (() => {
             
             const sedeId = params.id;
             if (!sedeId) {
-                console.error('No sede ID provided');
+                console.error('No location ID provided');
                 Router.navigate('dashboard');
                 return;
             }
@@ -47,7 +47,7 @@ const SedeView = (() => {
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                                         </svg>
-                                        Búsqueda
+                                        Search
                                     </span>
                                 </button>
                             </div>
@@ -56,13 +56,13 @@ const SedeView = (() => {
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                                     </svg>
-                                    Actualizar
+                                    Refresh
                                 </button>
                                 <button onclick="Auth.logout()" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition-all hover:scale-105 transform flex items-center gap-2">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                                     </svg>
-                                    Cerrar Sesión
+                                    Logout
                                 </button>
                             </div>
                         </div>
@@ -78,8 +78,8 @@ const SedeView = (() => {
                                     </div>
                                     <div class="absolute inset-0 w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 animate-ping opacity-20"></div>
                                 </div>
-                                <h2 class="text-xl font-semibold text-white mb-2">Cargando Sede...</h2>
-                                <p class="text-gray-400">Obteniendo información de la sede y sus cortes</p>
+                                <h2 class="text-xl font-semibold text-white mb-2">Loading Location...</h2>
+                                <p class="text-gray-400">Getting location information and its cohorts</p>
                             </div>
                         </div>
                     </div>
@@ -88,13 +88,21 @@ const SedeView = (() => {
 
             console.log('Loading specific sede data for ID:', sedeId);
             const data = await Api.get(`/dashboard/sedes/${sedeId}`);
-            console.log('API Response:', data);
-            _sedeData = data.sede;
-            _cohortsData = data.cohorts || [];
-            renderSedeWithCohorts(data);
+            console.log('Raw sede data received:', data);
+            
+            // Apply data mapping for consistency
+            const mappedData = {
+                sede: TranslationHelper.mapBackendToFrontend(data.sede || {}),
+                cohorts: TranslationHelper.mapArray(data.cohorts || [])
+            };
+            console.log('Mapped sede data:', mappedData);
+            
+            _sedeData = mappedData.sede;
+            _cohortsData = mappedData.cohorts;
+            renderSedeWithCohorts(mappedData);
 
         } catch (error) {
-            console.error('Error loading sede:', error);
+            console.error('Error loading location:', error);
             const app = document.getElementById('app');
             if (app) {
                 app.innerHTML = `
@@ -105,10 +113,10 @@ const SedeView = (() => {
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                 </svg>
                             </div>
-                            <h2 class="text-2xl font-bold text-red-400 mb-4">Error al cargar Sede</h2>
+                            <h2 class="text-2xl font-bold text-red-400 mb-4">Error Loading Location</h2>
                             <p class="text-gray-400 mb-6">${error.message}</p>
                             <button onclick="Router.navigate('dashboard')" class="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg transition-all hover:scale-105 transform">
-                                Volver al Dashboard
+                                Back to Dashboard
                             </button>
                         </div>
                     </div>
@@ -119,20 +127,26 @@ const SedeView = (() => {
 
     function renderSedeWithCohorts({ sede, cohorts }) {
         console.log('=== RENDERING SEDE ===');
-        console.log('Sede:', sede);
-        console.log('Cohorts:', cohorts);
+        console.log('Raw Sede data:', sede);
+        console.log('Raw Cohorts data:', cohorts);
         console.log('====================');
 
-        const content = document.getElementById('sede-content');
+        // Apply data mapping for consistency
+        const mappedSede = TranslationHelper.mapBackendToFrontend(sede || {});
+        const mappedCohorts = TranslationHelper.mapArray(cohorts || []);
         
-        if (!sede || !cohorts) {
-            console.error('Missing sede or cohorts data');
+        console.log('Mapped Sede data:', mappedSede);
+        console.log('Mapped Cohorts data:', mappedCohorts);
+
+        const content = document.getElementById('sede-content');
+        if (!content) {
+            console.error('sede-content element not found');
             return;
         }
 
         // Store data for other functions
-        _sedeData = sede;
-        _cohortsData = cohorts;
+        _sedeData = mappedSede;
+        _cohortsData = mappedCohorts;
 
         content.innerHTML = `
             <!-- Sede Header -->
@@ -148,51 +162,51 @@ const SedeView = (() => {
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                                     </svg>
                                 </div>
-                                <h1 class="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Cohortes ${sede.name || 'Sede'}</h1>
+                                <h1 class="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Cohorts ${mappedSede.name || 'Location'}</h1>
                             </div>
-                            <p class="text-gray-400 text-lg">Cortes disponibles en ${sede.name || 'esta sede'}</p>
+                            <p class="text-gray-400 text-lg">Cohorts available in ${mappedSede.name || 'this location'}</p>
                         </div>
                         <div class="bg-blue-600/80 backdrop-blur-sm px-4 py-2 rounded-lg group-hover:scale-110 transition-transform">
-                            <span class="text-white font-medium">Sede Activa</span>
+                            <span class="text-white font-medium">Location Active</span>
                         </div>
                     </div>
                     
                     <!-- Stats Grid -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                         <div class="bg-gray-700/50 backdrop-blur-sm rounded-lg p-6 border border-gray-600/50 group/item hover:bg-gray-700/70 transition-all">
-                            <h3 class="text-xl font-semibold text-white mb-4 group/item:text-blue-300 transition-colors">Información General</h3>
+                            <h3 class="text-xl font-semibold text-white mb-4 group/item:text-blue-300 transition-colors">General Information</h3>
                             <div class="space-y-3">
                                 <div class="flex items-center justify-between group/subitem">
-                                    <span class="text-gray-400 group/subitem:text-gray-300 transition-colors">Dirección:</span>
-                                    <span class="text-white font-medium group/subitem:text-blue-300 transition-colors">${sede.address || 'No disponible'}</span>
+                                    <span class="text-gray-400 group/subitem:text-gray-300 transition-colors">Address:</span>
+                                    <span class="text-white font-medium group/subitem:text-blue-300 transition-colors">${mappedSede.address || 'not available'}</span>
                                 </div>
                                 <div class="flex items-center justify-between group/subitem">
-                                    <span class="text-gray-400 group/subitem:text-gray-300 transition-colors">Teléfono:</span>
-                                    <span class="text-white font-medium group/subitem:text-blue-300 transition-colors">${sede.phone || 'No disponible'}</span>
+                                    <span class="text-gray-400 group/subitem:text-gray-300 transition-colors">Phone:</span>
+                                    <span class="text-white font-medium group/subitem:text-blue-300 transition-colors">${mappedSede.phone || 'not available'}</span>
                                 </div>
                                 <div class="flex items-center justify-between group/subitem">
-                                    <span class="text-gray-400 group/subitem:text-gray-300 transition-colors">Estado:</span>
+                                    <span class="text-gray-400 group/subitem:text-gray-300 transition-colors">State:</span>
                                     <div class="bg-green-600/80 backdrop-blur-sm px-3 py-1 rounded-full group/subitem:scale-110 transition-transform">
-                                        <span class="text-white text-xs font-medium">Activa</span>
+                                        <span class="text-white text-xs font-medium">Active</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         
                         <div class="bg-gray-700/50 backdrop-blur-sm rounded-lg p-6 border border-gray-600/50 group/item hover:bg-gray-700/70 transition-all">
-                            <h3 class="text-xl font-semibold text-white mb-4 group/item:text-blue-300 transition-colors">Estadísticas</h3>
+                            <h3 class="text-xl font-semibold text-white mb-4 group/item:text-blue-300 transition-colors">Statistics</h3>
                             <div class="space-y-3">
                                 <div class="flex items-center justify-between group/subitem">
-                                    <span class="text-gray-400 group/subitem:text-gray-300 transition-colors">Total Cortes:</span>
-                                    <span class="text-white font-medium group/subitem:text-blue-300 transition-colors">${cohorts.length || 0}</span>
+                                    <span class="text-gray-400 group/subitem:text-gray-300 transition-colors">TOTAL Cohorts:</span>
+                                    <span class="text-white font-medium group/subitem:text-blue-300 transition-colors">${mappedCohorts.length || 0}</span>
                                 </div>
                                 <div class="flex items-center justify-between group/subitem">
-                                    <span class="text-gray-400 group/subitem:text-gray-300 transition-colors">Total Couders:</span>
-                                    <span class="text-white font-medium group/subitem:text-blue-300 transition-colors">${cohorts.reduce((sum, c) => sum + (parseInt(c.total)||0), 0)}</span>
+                                    <span class="text-gray-400 group/subitem:text-gray-300 transition-colors">TOTAL Couders:</span>
+                                    <span class="text-white font-medium group-hover:text-gray-300 transition-colors">${mappedCohorts.reduce((sum, c) => sum + (parseInt(c.TOTAL)||0), 0)}</span>
                                 </div>
                                 <div class="flex items-center justify-between group/subitem">
-                                    <span class="text-gray-400 group/subitem:text-gray-300 transition-colors">Activos:</span>
-                                    <span class="text-white font-medium group/subitem:text-blue-300 transition-colors">${cohorts.reduce((sum, c) => sum + (parseInt(c.active)||0), 0)}</span>
+                                    <span class="text-gray-400 group/subitem:text-gray-300 transition-colors">Active:</span>
+                                    <span class="text-white font-medium group-hover:text-gray-300 transition-colors">${mappedCohorts.reduce((sum, c) => sum + (parseInt(c.active)||0), 0)}</span>
                                 </div>
                             </div>
                         </div>
@@ -209,27 +223,27 @@ const SedeView = (() => {
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
                             </svg>
                         </div>
-                        <h2 class="text-2xl font-bold text-white">Cortes</h2>
-                        <span class="bg-blue-600/20 text-blue-400 px-3 py-1 rounded-full text-sm">${cohorts.length} cortes</span>
+                        <h2 class="text-2xl font-bold text-white">Cohorts</h2>
+                        <span class="bg-blue-600/20 text-blue-400 px-3 py-1 rounded-full text-sm">${mappedCohorts.length} cohorts</span>
                     </div>
                     <div class="flex gap-2">
                         <button onclick="SedeView._sortCohorts('name')" class="text-gray-400 hover:text-white transition-colors px-3 py-2 rounded-lg hover:bg-gray-700/50">
                             <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"/>
                             </svg>
-                            Ordenar
+                            Sort
                         </button>
                         <button onclick="SedeView._filterCohorts('all')" class="text-gray-400 hover:text-white transition-colors px-3 py-2 rounded-lg hover:bg-gray-700/50">
                             <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 01-.707.293H4a1 1 0 01-1-1V4z"/>
                             </svg>
-                            Todos
+                            All
                         </button>
                     </div>
                 </div>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    ${cohorts.map((cohort, idx) => `
+                    ${mappedCohorts?.map((cohort, idx) => `
                     <div class="cohort-card group bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 hover:border-purple-600/50 transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer relative" 
                          data-cohort-id="${cohort.id}"
                          style="animation-delay: ${idx * 100}ms">
@@ -244,18 +258,18 @@ const SedeView = (() => {
                                 <h3 class="text-lg font-bold text-white group-hover:text-blue-300 transition-colors">${cohort.name}</h3>
                             </div>
                             <div class="bg-purple-600/80 backdrop-blur-sm px-3 py-1 rounded-full group-hover:scale-110 transition-transform">
-                                <span class="text-white text-xs font-medium">${cohort.total || 0} couders</span>
+                                <span class="text-white text-xs font-medium">${cohort.TOTAL || 0} couders</span>
                             </div>
                         </div>
                         
                         <div class="grid grid-cols-3 gap-4">
                             <div class="text-center">
-                                <div class="text-2xl font-bold text-blue-300">${cohort.total || 0}</div>
-                                <div class="text-xs text-gray-400">Total</div>
+                                <div class="text-2xl font-bold text-blue-300">${cohort.TOTAL || 0}</div>
+                                <div class="text-xs text-gray-400">TOTAL</div>
                             </div>
                             <div class="text-center">
                                 <div class="text-2xl font-bold text-red-300">${cohort.withdrawn || 0}</div>
-                                <div class="text-xs text-gray-400">Retirados</div>
+                                <div class="text-xs text-gray-400">Withdrawals</div>
                             </div>
                             <div class="text-center">
                                 <div class="text-2xl font-bold text-green-300">${cohort.attendancePercent || 0}%</div>
@@ -280,11 +294,11 @@ const SedeView = (() => {
         console.log('Adding click listeners to', cards.length, 'cohort cards');
         cards.forEach(card => {
             const cohortId = card.getAttribute('data-cohort-id');
-            card.onclick = function(e) {
+            card.addEventListener('click', function(e) {
                 console.log('Cohort card clicked:', cohortId);
-                window.location.hash = '#cohort?id=' + cohortId;
+                Router.navigate('cohort', { id: cohortId });
                 return false;
-            };
+            });
         });
     }
 
@@ -305,17 +319,26 @@ const SedeView = (() => {
         const btn = event.target.closest('button');
         const originalContent = btn.innerHTML;
         
-        btn.innerHTML = '<div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div> Actualizando...';
+        btn.innerHTML = '<div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div> Updating...';
         btn.disabled = true;
         
         try {
             const data = await Api.get(`/dashboard/sedes/${_sedeData.id}`);
-            _sedeData = data.sede;
-            _cohortsData = data.cohorts || [];
-            renderSedeWithCohorts(data);
+            console.log('Raw refresh data:', data);
+            
+            // Apply data mapping for consistency
+            const mappedData = {
+                sede: TranslationHelper.mapBackendToFrontend(data.sede || {}),
+                cohorts: TranslationHelper.mapArray(data.cohorts || [])
+            };
+            console.log('Mapped refresh data:', mappedData);
+            
+            _sedeData = mappedData.sede;
+            _cohortsData = mappedData.cohorts;
+            renderSedeWithCohorts(mappedData);
             
             // Show success feedback
-            btn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Actualizado';
+            btn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Updated';
             setTimeout(() => {
                 btn.innerHTML = originalContent;
                 btn.disabled = false;
@@ -339,7 +362,7 @@ const SedeView = (() => {
         const btn = event?.target?.closest('button');
         if (btn) {
             const originalText = btn.innerHTML;
-            btn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Ordenado';
+            btn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Orofnado';
             setTimeout(() => {
                 btn.innerHTML = originalText;
             }, 1000);
@@ -347,7 +370,7 @@ const SedeView = (() => {
     }
 
     function _filterCohorts(filter) {
-        // For now, just show all cohorts
+        // For Now, just show all cohorts
         renderSedeWithCohorts({ sede: _sedeData, cohorts: _cohortsData });
         
         // Show feedback

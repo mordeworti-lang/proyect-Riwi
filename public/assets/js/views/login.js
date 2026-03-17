@@ -13,6 +13,9 @@ const LoginView = (() => {
             return;
         }
 
+        // Simple clear - just empty the app
+        app.innerHTML = '';
+
         app.innerHTML = `
             <div class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white flex items-center justify-center">
                 <!-- Animated Background Elements -->
@@ -36,7 +39,7 @@ const LoginView = (() => {
                                     </svg>
                                 </div>
                                 <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">DataCore</h1>
-                                <p class="text-gray-400">Sistema de Gestión Clínica</p>
+                                <p class="text-gray-400">Clinical Management System</p>
                             </div>
 
                             <!-- Auth Toggle Button -->
@@ -48,7 +51,7 @@ const LoginView = (() => {
                                         class="auth-tab flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all duration-200 bg-blue-600 text-white"
                                         data-view="login"
                                     >
-                                        Iniciar Sesión
+                                        Sign In
                                     </button>
                                     <button 
                                         type="button" 
@@ -56,13 +59,13 @@ const LoginView = (() => {
                                         class="auth-tab flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all duration-200 text-gray-400 hover:text-white"
                                         data-view="register"
                                     >
-                                        Registrarse
+                                        Register
                                     </button>
                                 </div>
                             </div>
 
                             <!-- Login Form -->
-                            <div id="login-form-container" class="space-y-6">
+                            <div class="space-y-6">
                                 <form id="login-form" class="space-y-6">
                                 <div>
                                     <label class="block text-gray-300 mb-2 text-sm font-medium">Email</label>
@@ -77,14 +80,14 @@ const LoginView = (() => {
                                             id="email" 
                                             value="interventor@clinica.com"
                                             class="w-full bg-gray-700/50 backdrop-blur-sm border border-gray-600 rounded-lg px-4 py-3 pl-12 text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
-                                            placeholder="correo@ejemplo.com"
+                                            placeholder="email@example.com"
                                             required
                                         >
                                     </div>
                                 </div>
                                 
                                 <div>
-                                    <label class="block text-gray-300 mb-2 text-sm font-medium">Contraseña</label>
+                                    <label class="block text-gray-300 mb-2 text-sm font-medium">Password</label>
                                     <div class="relative group">
                                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                             <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -94,7 +97,7 @@ const LoginView = (() => {
                                         <input 
                                             type="password" 
                                             id="password" 
-                                            placeholder="Contraseña"
+                                            placeholder="Password"
                                             class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none"
                                         >
                                     </div>
@@ -109,7 +112,7 @@ const LoginView = (() => {
                                         checked
                                     >
                                     <label for="remember" class="ml-2 text-sm text-gray-300 cursor-pointer hover:text-white transition-colors">
-                                        Recordar sesión
+                                        Remember Me
                                     </label>
                                 </div>
 
@@ -119,124 +122,11 @@ const LoginView = (() => {
                                     id="login-btn"
                                     class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500/50 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
                                 >
-                                    <span id="btn-text">Iniciar Sesión</span>
+                                    <span id="btn-text">Sign In</span>
                                     <svg id="btn-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m0 0l-3 3m3-6H9a2 2 0 00-2 2v6a2 2 0 002 2h6a2 2 0 002 2V11a2 2 0 00-2-2h-6a2 2 0 00-2 2v6a2 2 0 002 2h6a2 2 0 002 2V11a2 2 0 00-2-2h-6a2 2 0 00-2 2v6z"/>
                                     </svg>
                                 </button>
-                                </form>
-                            </div>
-
-                            <!-- Register Form (Hidden by default) -->
-                            <div id="register-form-container" class="space-y-6 hidden">
-                                <form id="register-form" class="space-y-6">
-                                    <!-- Full Name Field -->
-                                    <div>
-                                        <label class="block text-gray-300 mb-2 text-sm font-medium">Nombre Completo</label>
-                                        <div class="relative group">
-                                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                                                </svg>
-                                            </div>
-                                            <input 
-                                                type="text" 
-                                                id="reg-fullName" 
-                                                name="fullName"
-                                                class="w-full bg-gray-700/50 backdrop-blur-sm border border-gray-600 rounded-lg px-4 py-3 pl-12 text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
-                                                placeholder="Juan Pérez García"
-                                                required
-                                            >
-                                        </div>
-                                    </div>
-
-                                    <!-- Email Field -->
-                                    <div>
-                                        <label class="block text-gray-300 mb-2 text-sm font-medium">Email Institucional</label>
-                                        <div class="relative group">
-                                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                                                </svg>
-                                            </div>
-                                            <input 
-                                                type="email" 
-                                                id="reg-email" 
-                                                name="email"
-                                                class="w-full bg-gray-700/50 backdrop-blur-sm border border-gray-600 rounded-lg px-4 py-3 pl-12 text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
-                                                placeholder="interventor@clinica.com"
-                                                required
-                                            >
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- Password Field -->
-                                    <div>
-                                        <label class="block text-gray-300 mb-2 text-sm font-medium">Contraseña</label>
-                                        <div class="relative group">
-                                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-2a2 2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2h6a2 2 0 002 2v2a2 2 0 002-2V11a2 2 0 00-2-2h-6a2 2 0 00-2 2v6a2 2 0 002 2h6a2 2 0 002 2v6z"/>
-                                                </svg>
-                                            </div>
-                                            <input 
-                                                type="password" 
-                                                id="reg-password" 
-                                                name="password"
-                                                class="w-full bg-gray-700/50 backdrop-blur-sm border border-gray-600 rounded-lg px-4 py-3 pl-12 text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
-                                                placeholder="Mínimo 8 caracteres"
-                                                required
-                                                minlength="8"
-                                            >
-                                        </div>
-                                    </div>
-
-                                    <!-- Confirm Password Field -->
-                                    <div>
-                                        <label class="block text-gray-300 mb-2 text-sm font-medium">Confirmar Contraseña</label>
-                                        <div class="relative group">
-                                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                                </svg>
-                                            </div>
-                                            <input 
-                                                type="password" 
-                                                id="reg-confirmPassword" 
-                                                name="confirmPassword"
-                                                class="w-full bg-gray-700/50 backdrop-blur-sm border border-gray-600 rounded-lg px-4 py-3 pl-12 text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
-                                                placeholder="Repite la contraseña"
-                                                required
-                                                minlength="8"
-                                            >
-                                        </div>
-                                    </div>
-
-                                    <!-- Terms Checkbox -->
-                                    <div class="flex items-start">
-                                        <input 
-                                            type="checkbox" 
-                                            id="reg-terms" 
-                                            name="terms"
-                                            class="w-4 h-4 bg-gray-700/50 border border-gray-600 rounded text-blue-600 focus:ring-2 focus:ring-blue-500/50 transition-colors mt-1"
-                                            required
-                                        >
-                                        <label for="reg-terms" class="ml-2 text-sm text-gray-300 cursor-pointer hover:text-white transition-colors">
-                                            Acepto los términos y condiciones de uso del sistema DataCore
-                                        </label>
-                                    </div>
-
-                                    <!-- Register Button -->
-                                    <button 
-                                        type="submit" 
-                                        id="register-btn"
-                                        class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500/50 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
-                                    >
-                                        <span id="reg-btn-text">Registrarse</span>
-                                        <svg id="reg-btn-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
-                                        </svg>
-                                    </button>
                                 </form>
                             </div>
 
@@ -247,16 +137,16 @@ const LoginView = (() => {
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                     </svg>
                                     <div class="text-sm">
-                                        <p class="text-blue-300 font-medium mb-1">Credenciales de Demo:</p>
+                                        <p class="text-blue-300 font-medium mb-1">Demo Credentials:</p>
                                         <ul class="text-gray-400 space-y-1">
                                             <li>• Email: interventor@clinica.com</li>
-                                            <li>• Contraseña: Interventor1234!</li>
+                                            <li>• Password: Interventor1234!</li>
                                         </ul>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Status Message -->
+                            <!-- Status message -->
                             <div id="status-message" class="hidden">
                                 <div class="p-4 rounded-lg border flex items-center gap-3">
                                     <div id="status-icon"></div>
@@ -271,30 +161,12 @@ const LoginView = (() => {
 
         // Set up form submission
         document.getElementById('login-form').addEventListener('submit', _handleLogin);
-        document.getElementById('register-form').addEventListener('submit', _handleRegister);
-        
-        // Set up toggle tabs
-        _setupToggleTabs();
         
         // Add input focus effects
         _addInputEffects();
         
-        // Add password validation for register
-        _addPasswordValidation();
-        
-        // Check initial hash and show correct view
-        _checkInitialView();
-    }
-
-    function _checkInitialView() {
-        const hash = window.location.hash.slice(1); // Remove #
-        console.log('Initial hash:', hash);
-        
-        if (hash === 'register') {
-            _switchToRegister();
-        } else {
-            _switchToLogin(); // Default to login
-        }
+        // Set up toggle tabs
+        _setupToggleTabs();
     }
 
     function _setupToggleTabs() {
@@ -306,182 +178,19 @@ const LoginView = (() => {
             return;
         }
         
-        // Event listener para Login tab
+        // Event listener for Login tab
         loginTab.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
-            _switchToLogin();
+            Router.navigate('login');
         });
         
-        // Event listener para Register tab
+        // Event listener for Register tab
         registerTab.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
-            _switchToRegister();
+            Router.navigate('register');
         });
-    }
-    
-    function _switchToLogin() {
-        const loginTab = document.getElementById('login-tab');
-        const registerTab = document.getElementById('register-tab');
-        const loginContainer = document.getElementById('login-form-container');
-        const registerContainer = document.getElementById('register-form-container');
-        
-        // Actualizar estilos de tabs
-        loginTab.classList.add('bg-blue-600', 'text-white');
-        loginTab.classList.remove('text-gray-400', 'hover:text-white');
-        
-        registerTab.classList.remove('bg-blue-600', 'text-white');
-        registerTab.classList.add('text-gray-400', 'hover:text-white');
-        
-        // Mostrar/ocultar formularios
-        if (loginContainer) loginContainer.classList.remove('hidden');
-        if (registerContainer) registerContainer.classList.add('hidden');
-        
-        // Actualizar hash
-        window.location.hash = '#login';
-    }
-    
-    function _switchToRegister() {
-        const loginTab = document.getElementById('login-tab');
-        const registerTab = document.getElementById('register-tab');
-        const loginContainer = document.getElementById('login-form-container');
-        const registerContainer = document.getElementById('register-form-container');
-        
-        // Actualizar estilos de tabs
-        registerTab.classList.add('bg-blue-600', 'text-white');
-        registerTab.classList.remove('text-gray-400', 'hover:text-white');
-        
-        loginTab.classList.remove('bg-blue-600', 'text-white');
-        loginTab.classList.add('text-gray-400', 'hover:text-white');
-        
-        // Mostrar/ocultar formularios
-        if (registerContainer) registerContainer.classList.remove('hidden');
-        if (loginContainer) loginContainer.classList.add('hidden');
-        
-        // Actualizar hash
-        window.location.hash = '#register';
-    }
-
-    function _addPasswordValidation() {
-        const password = document.getElementById('reg-password');
-        const confirmPassword = document.getElementById('reg-confirmPassword');
-        
-        if (password && confirmPassword) {
-            confirmPassword.addEventListener('input', () => {
-                if (confirmPassword.value && password.value !== confirmPassword.value) {
-                    confirmPassword.setCustomValidity('Las contraseñas no coinciden');
-                } else {
-                    confirmPassword.setCustomValidity('');
-                }
-            });
-            
-            password.addEventListener('input', () => {
-                if (confirmPassword.value && password.value !== confirmPassword.value) {
-                    confirmPassword.setCustomValidity('Las contraseñas no coinciden');
-                } else {
-                    confirmPassword.setCustomValidity('');
-                }
-            });
-        }
-    }
-
-    async function _handleRegister(e) {
-        e.preventDefault();
-        
-        if (_isLoading) return;
-        
-        const formData = new FormData(e.target);
-        const fullName = formData.get('fullName').trim();
-        const email = formData.get('email').trim();
-        const password = formData.get('password');
-        const confirmPassword = formData.get('confirmPassword');
-        const terms = formData.get('terms');
-        
-        const btn = document.getElementById('register-btn');
-        const btnText = document.getElementById('reg-btn-text');
-        const btnIcon = document.getElementById('reg-btn-icon');
-        
-        // Validate inputs
-        if (!fullName || !email || !password || !confirmPassword) {
-            _showStatus('error', 'Por favor complete todos los campos');
-            return;
-        }
-        
-        if (password !== confirmPassword) {
-            _showStatus('error', 'Las contraseñas no coinciden');
-            return;
-        }
-        
-        if (password.length < 8) {
-            _showStatus('error', 'La contraseña debe tener al menos 8 caracteres');
-            return;
-        }
-        
-        if (!terms) {
-            _showStatus('error', 'Debe aceptar los términos y condiciones');
-            return;
-        }
-        
-        if (!email.includes('@')) {
-            _showStatus('error', 'Por favor ingrese un email válido');
-            return;
-        }
-        
-        // Show loading state
-        _isLoading = true;
-        btn.disabled = true;
-        btnText.textContent = 'Registrando...';
-        btnIcon.innerHTML = `
-            <svg class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-            </svg>
-        `;
-        
-        try {
-            // Call API to register
-            const response = await fetch('/api/auth/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    fullName,
-                    email,
-                    password,
-                    roleId: 1 // Default to interventor role
-                })
-            });
-            
-            const data = await response.json();
-            
-            if (!response.ok) {
-                throw new Error(data.error || 'Error al registrar usuario');
-            }
-            
-            _showStatus('success', '¡Registro exitoso! Redirigiendo al login...');
-            
-            // Switch to login view after successful registration
-            setTimeout(() => {
-                _switchToLogin();
-                // Clear form
-                e.target.reset();
-            }, 2000);
-            
-        } catch (error) {
-            console.error('Register error:', error);
-            _showStatus('error', error.message || 'Error al registrar usuario');
-        } finally {
-            // Reset button state
-            _isLoading = false;
-            btn.disabled = false;
-            btnText.textContent = 'Registrarse';
-            btnIcon.innerHTML = `
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
-                </svg>
-            `;
-        }
     }
 
     function _addInputEffects() {
@@ -510,19 +219,19 @@ const LoginView = (() => {
         
         // Validate inputs
         if (!email || !password) {
-            _showStatus('error', 'Por favor complete todos los campos');
+            _showStatus('error', 'Please complete all fields');
             return;
         }
         
         if (!email.includes('@')) {
-            _showStatus('error', 'Por favor ingrese un email válido');
+            _showStatus('error', 'Please enter a valid email');
             return;
         }
         
         // Show loading state
         _isLoading = true;
         btn.disabled = true;
-        btnText.textContent = 'Iniciando...';
+        btnText.textContent = 'Signing in...';
         btnIcon.innerHTML = `
             <svg class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
@@ -533,7 +242,7 @@ const LoginView = (() => {
             // Auth.login handles everything: calls API, stores tokens, returns user
             const user = await Auth.login(email, password);
             
-            _showStatus('success', 'Inicio de sesion exitoso!');
+            _showStatus('success', 'Login successful!');
             
             // Redirect to dashboard
             setTimeout(() => {
@@ -542,12 +251,12 @@ const LoginView = (() => {
             
         } catch (error) {
             console.error('Login error:', error);
-            _showStatus('error', error.message || 'Error al iniciar sesión');
+            _showStatus('error', error.message || 'Error logging in');
         } finally {
             // Reset button state
             _isLoading = false;
             btn.disabled = false;
-            btnText.textContent = 'Iniciar Sesión';
+            btnText.textContent = 'Sign In';
             btnIcon.innerHTML = `
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
@@ -572,47 +281,42 @@ const LoginView = (() => {
         statusDiv.classList.remove('bg-green-500/10', 'bg-red-500/10', 'bg-yellow-500/10');
         statusText.classList.remove('text-green-300', 'text-red-300', 'text-yellow-300');
         
-        // Add appropriate styling
+        // Add appropriate classes based on type
         if (type === 'success') {
             statusDiv.classList.add('border-green-500', 'bg-green-500/10');
+            statusText.classList.add('text-green-300');
             statusIcon.innerHTML = `
                 <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                 </svg>
             `;
-            statusText.className = 'text-green-300';
         } else if (type === 'error') {
             statusDiv.classList.add('border-red-500', 'bg-red-500/10');
+            statusText.classList.add('text-red-300');
             statusIcon.innerHTML = `
                 <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                 </svg>
             `;
-            statusText.className = 'text-red-300';
         } else {
             statusDiv.classList.add('border-yellow-500', 'bg-yellow-500/10');
+            statusText.classList.add('text-yellow-300');
             statusIcon.innerHTML = `
                 <svg class="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"/>
                 </svg>
             `;
-            statusText.className = 'text-yellow-300';
         }
         
         statusText.textContent = message;
         
-        // Auto-hide after 5 seconds for success messages
-        if (type === 'success') {
-            setTimeout(() => {
-                if (statusDiv) {
-                    statusDiv.classList.add('hidden');
-                }
-            }, 5000);
-        }
+        // Auto-hide after 5 seconds
+        setTimeout(() => {
+            statusDiv.classList.add('hidden');
+        }, 5000);
     }
 
-    return { render };
+    return {
+        render
+    };
 })();
-
-// Make globally available
-window.LoginView = LoginView;

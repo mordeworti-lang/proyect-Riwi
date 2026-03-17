@@ -4,7 +4,7 @@ class TTSService {
         this.synth = window.speechSynthesis;
         this.currentUtterance = null;
         this.voices = [];
-        this.isInitialized = false;
+        this.initialized = false;
         
         // Initialize voices
         this.initializeVoices();
@@ -22,12 +22,12 @@ class TTSService {
     
     loadVoices() {
         this.voices = this.synth.getVoices();
-        this.isInitialized = true;
+        this.initialized = true;
         console.log('TTS: Loaded', this.voices.length, 'voices');
     }
     
     getBestEnglishVoice() {
-        if (!this.isInitialized || this.voices.length === 0) {
+        if (!this.initialized || this.voices.length === 0) {
             console.warn('TTS: No voices available');
             return null;
         }
@@ -86,7 +86,7 @@ class TTSService {
             this.cancel();
             
             // Wait for voices to be loaded
-            if (!this.isInitialized) {
+            if (!this.initialized) {
                 setTimeout(() => this.speak(text, options).then(resolve).catch(reject), 100);
                 return;
             }
@@ -187,9 +187,4 @@ class TTSService {
     }
 }
 
-// Export for use in other modules
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = TTSService;
-} else {
-    window.TTSService = TTSService;
-}
+window.TTSService = TTSService;
