@@ -12,7 +12,7 @@
 4. [Diseño de Base de Datos](#4-diseño-de-base-de-datos)
 5. [Conexión Backend - Base de Datos](#5-conexión-backend---base-de-datos)
 6. [Conexión Frontend - Backend](#6-conexión-frontend---backend)
-7. [Testing Driven Development (TDD)](#7-testing-driven-development-tdd)
+7. [Testing Driven Development (TDD)](#7-testing-drivjnen-development-tdd)
 8. [Flujo de Encriptación y JWT](#8-flujo-de-encriptación-y-jwt)
 9. [Sistema de Audio (Text-to-Speech)](#9-sistema-de-audio-text-to-speech)
 10. [Flujo Completo de Registro y Login](#10-flujo-completo-de-registro-y-login)
