@@ -10,6 +10,7 @@ const CouderView = (() => {
     let _ttsPlaying = null;
     let _showAllAiAnalyses = false;
     let _selectedAiAnalysisIndex = 0;
+    let _ttsService = null;
 
     const INTERVENTION_TYPES = [
         { id: 1, label: 'Initial Evaluation' },
@@ -24,6 +25,12 @@ const CouderView = (() => {
         if (!app) return;
         const { id, cc } = params;
         app.innerHTML = _shellHtml();
+        
+        // Initialize TTS Service
+        if (window.TTSService) {
+            _ttsService = new TTSService();
+        }
+        
         try {
             _couder = cc
                 ? await Api.get('/couders/search?cc=' + encodeURIComponent(cc))
@@ -173,8 +180,8 @@ const CouderView = (() => {
         _aiAnalyses.forEach((a, idx) => {
             const ttsBtn = document.getElementById('tts-btn-' + idx);
             if (ttsBtn) {
-                const ttsText = 'Resumen: ' + (a.summary || '') + '. Diagnóstico: ' + (a.diagnosis || '') + '. Sugerencias: ' + (Array.isArray(a.suggestions) ? a.suggestions.join('\n') : (a.suggestions || ''));
-                const safeText = ttsText.replace(/'/g, '').replace(/"/g, '').replace(/\n/g, ' ');
+                const ttsText = 'Summary: ' + (a.summary || '') + '. Diagnosis: ' + (a.diagnosis || '') + '. Suggestions: ' + (Array.isArray(a.suggestions) ? a.suggestions.join('. ') : (a.suggestions || ''));
+                const safeText = ttsText.replace(/'/g, '').replace(/"/g, '').replace(/\n/g, '. ');
                 ttsBtn.addEventListener('click', () => _toggleTTS(idx, safeText));
             }
         });
@@ -239,21 +246,21 @@ const CouderView = (() => {
 
     function _aiCard(a, idx) {
         const date = a.createdAt ? new Date(a.createdAt).toLocaleString('es-CO') : '—';
-        const sugg = Array.isArray(a.suggestions) ? a.suggestions.join('\n') : (a.suggestions || '—');
-        const ttsText = 'Resumen: ' + (a.summary || '') + '. Diagnóstico: ' + (a.diagnosis || '') + '. Sugerencias: ' + sugg;
-        const safeText = ttsText.replace(/'/g, '').replace(/"/g, '').replace(/\n/g, ' ');
+        const sugg = Array.isArray(a.suggestions) ? a.suggestions.join('. ') : (a.suggestions || '—');
+        const ttsText = 'Summary: ' + (a.summary || '') + '. Diagnosis: ' + (a.diagnosis || '') + '. Suggestions: ' + sugg;
+        const safeText = ttsText.replace(/'/g, '').replace(/"/g, '').replace(/\n/g, '. ');
         return '<div class="bg-gray-700/40 rounded-xl p-6 border border-gray-600/40 mb-4" id="ai-' + idx + '">' +
             '<div class="flex flex-wrap items-center justify-between gap-3 mb-5">' +
-              '<p class="text-white font-semibold">Análisis del ' + _esc(date) + '</p>' +
+              '<p class="text-white font-semibold">Analysis from ' + _esc(date) + '</p>' +
               '<button id="tts-btn-' + idx + '" class="flex items-center gap-2 bg-gray-600 hover:bg-gray-500 px-3 py-2 rounded-lg text-sm text-white transition-all">' +
                 '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072M12 6v12m0 0l-3-3m3 3l3-3M6.343 6.343a8 8 0 000 11.314"/></svg>' +
-                '<span>Escuchar</span>' +
+                '<span>Listen</span>' +
               '</button>' +
             '</div>' +
             '<div class="space-y-4">' +
-              '<div class="bg-gray-800/60 rounded-lg p-4"><p class="text-purple-400 text-xs font-semibold uppercase tracking-wide mb-2">Resumen</p><p class="text-gray-200 leading-relaxed">' + _esc(a.summary || '—') + '</p></div>' +
-              '<div class="bg-gray-800/60 rounded-lg p-4"><p class="text-pink-400 text-xs font-semibold uppercase tracking-wide mb-2">Diagnóstico</p><p class="text-gray-200 leading-relaxed">' + _esc(a.diagnosis || '—') + '</p></div>' +
-              '<div class="bg-gray-800/60 rounded-lg p-4"><p class="text-blue-400 text-xs font-semibold uppercase tracking-wide mb-2">Sugerencias</p><p class="text-gray-200 leading-relaxed whitespace-pre-wrap">' + _esc(sugg) + '</p></div>' +
+              '<div class="bg-gray-800/60 rounded-lg p-4"><p class="text-purple-400 text-xs font-semibold uppercase tracking-wide mb-2">Summary</p><p class="text-gray-200 leading-relaxed">' + _esc(a.summary || '—') + '</p></div>' +
+              '<div class="bg-gray-800/60 rounded-lg p-4"><p class="text-pink-400 text-xs font-semibold uppercase tracking-wide mb-2">Diagnosis</p><p class="text-gray-200 leading-relaxed">' + _esc(a.diagnosis || '—') + '</p></div>' +
+              '<div class="bg-gray-800/60 rounded-lg p-4"><p class="text-blue-400 text-xs font-semibold uppercase tracking-wide mb-2">Suggestions</p><p class="text-gray-200 leading-relaxed whitespace-pre-wrap">' + _esc(sugg) + '</p></div>' +
             '</div>' +
         '</div>';
     }
@@ -422,22 +429,75 @@ const CouderView = (() => {
 
     function _toggleTTS(idx, text) {
         const btn = document.getElementById('tts-btn-' + idx);
-        if (!window.speechSynthesis) {
-            Toast.show('Tu navegador no soporta síntesis de voz.', 'error');
+        
+        if (!_ttsService) {
+            Toast.show('Text-to-speech service not available.', 'error');
             return;
         }
-        if (_ttsPlaying === idx && window.speechSynthesis.speaking) {
-            window.speechSynthesis.cancel();
+        
+        // If currently playing this same audio, stop it
+        if (_ttsPlaying === idx) {
+            _ttsService.cancel();
             _ttsPlaying = null;
-            if (btn) btn.querySelector('span').textContent = 'Escuchar';
+            if (btn) {
+                btn.querySelector('span').textContent = 'Listen';
+                btn.classList.remove('bg-red-600', 'hover:bg-red-700');
+                btn.classList.add('bg-gray-600', 'hover:bg-gray-500');
+            }
             return;
         }
-        window.speechSynthesis.cancel();
-        const utt = new SpeechSynthesisUtterance(text);
-        utt.lang = 'es-CO'; utt.rate = 0.92; utt.pitch = 1;
-        utt.onstart  = () => { _ttsPlaying = idx; if (btn) btn.querySelector('span').textContent = 'Detener'; };
-        utt.onend = utt.onerror = () => { _ttsPlaying = null; if (btn) btn.querySelector('span').textContent = 'Escuchar'; };
-        window.speechSynthesis.speak(utt);
+        
+        // Stop any other playing audio
+        if (_ttsPlaying !== null) {
+            const prevBtn = document.getElementById('tts-btn-' + _ttsPlaying);
+            if (prevBtn) {
+                prevBtn.querySelector('span').textContent = 'Listen';
+                prevBtn.classList.remove('bg-red-600', 'hover:bg-red-700');
+                prevBtn.classList.add('bg-gray-600', 'hover:bg-gray-500');
+            }
+        }
+        
+        // Update button state
+        _ttsPlaying = idx;
+        if (btn) {
+            btn.querySelector('span').textContent = 'Stop';
+            btn.classList.add('bg-red-600', 'hover:bg-red-700');
+            btn.classList.remove('bg-gray-600', 'hover:bg-gray-500');
+        }
+        
+        // Configure TTS options for better English
+        const ttsOptions = {
+            rate: 0.9,        // Slightly slower for clarity
+            pitch: 1.0,       // Normal pitch
+            volume: 1.0,      // Full volume
+            onStart: () => {
+                console.log('TTS: Started playing analysis');
+            },
+            onEnd: () => {
+                _ttsPlaying = null;
+                if (btn) {
+                    btn.querySelector('span').textContent = 'Listen';
+                    btn.classList.remove('bg-red-600', 'hover:bg-red-700');
+                    btn.classList.add('bg-gray-600', 'hover:bg-gray-500');
+                }
+            },
+            onError: (error) => {
+                console.error('TTS Error:', error);
+                _ttsPlaying = null;
+                if (btn) {
+                    btn.querySelector('span').textContent = 'Listen';
+                    btn.classList.remove('bg-red-600', 'hover:bg-red-700');
+                    btn.classList.add('bg-gray-600', 'hover:bg-gray-500');
+                }
+                Toast.show('Speech synthesis failed. Please try again.', 'error');
+            }
+        };
+        
+        // Speak the text
+        _ttsService.speak(text, ttsOptions).catch(error => {
+            console.error('TTS Speak Error:', error);
+            Toast.show('Failed to start speech synthesis.', 'error');
+        });
     }
 
     async function _refreshData() {
