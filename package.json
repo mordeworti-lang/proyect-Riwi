@@ -12,7 +12,11 @@
     "migrate": "node scripts/run-migration.js",
     "migrate:clear": "node scripts/run-migration.js --clear",
     "seed": "node scripts/seed-data.js",
-    "setup": "npm run migrate && npm run seed"
+    "clean": "node scripts/clean-bad-data.js",
+    "clean:keep-users": "node scripts/clean-bad-data.js --keep-users",
+    "check-data": "node scripts/clean-bad-data.js --check",
+    "setup": "npm run migrate && npm run seed",
+    "reset": "npm run clean && npm run migrate && npm run seed"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

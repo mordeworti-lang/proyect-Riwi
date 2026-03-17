@@ -10,8 +10,13 @@ const UserRepository = {
             JOIN roles r ON r.id = u.role_id
             WHERE u.email = $1 AND u.is_active = TRUE
         `;
-        const { rows } = await pool.query(sql, [email]);
-        return rows[0] || null;
+        const client = await pool.connect();
+        try {
+            const { rows } = await client.query(sql, [email]);
+            return rows[0] || null;
+        } finally {
+            client.release();
+        }
     },
 
     async findById(id) {
@@ -21,8 +26,13 @@ const UserRepository = {
             JOIN roles r ON r.id = u.role_id
             WHERE u.id = $1
         `;
-        const { rows } = await pool.query(sql, [id]);
-        return rows[0] || null;
+        const client = await pool.connect();
+        try {
+            const { rows } = await client.query(sql, [id]);
+            return rows[0] || null;
+        } finally {
+            client.release();
+        }
     },
 
     async create({ fullName, email, passwordHash, roleId }) {
@@ -31,8 +41,13 @@ const UserRepository = {
             VALUES ($1, $2, $3, $4)
             RETURNING id, full_name, email, role_id, created_at
         `;
-        const { rows } = await pool.query(sql, [fullName, email, passwordHash, roleId]);
-        return rows[0];
+        const client = await pool.connect();
+        try {
+            const { rows } = await client.query(sql, [fullName, email, passwordHash, roleId]);
+            return rows[0];
+        } finally {
+            client.release();
+        }
     },
 };
 

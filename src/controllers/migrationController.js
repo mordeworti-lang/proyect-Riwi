@@ -1,7 +1,7 @@
 'use strict';
 
 const AutoMigrationService = require('../services/autoMigrationService');
-const postgres = require('../config/postgres');
+const postgres = require('../config/postgres-mock');
 const pool = postgres.pool;
 
 const MigrationController = {

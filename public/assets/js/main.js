@@ -9,7 +9,7 @@
         console.log('authGuard called for:', name);
         console.log('Auth.isLoggedIn():', Auth.isLoggedIn());
         
-        if (!Auth.isLoggedIn() && name !== 'login') {
+        if (!Auth.isLoggedIn() && name !== 'login' && name !== 'register') {
             console.log('Not logged in, redirecting to login');
             window.location.hash = '#login';
             return false;
@@ -21,6 +21,11 @@
     Router.register('login', (p) => {
         console.log('Login route handler called');
         LoginView.render(p);
+    });
+    
+    Router.register('register', (p) => {
+        console.log('Register route handler called');
+        RegisterView.render(p);
     });
     
     Router.register('dashboard', (p) => {
