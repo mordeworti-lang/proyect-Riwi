@@ -32,7 +32,7 @@ const AiAnalysisService = {
         const apiKey = getApiKey();
         if (!apiKey) {
             throw new AppError(
-                'Analisis IA no configurado — falta OPENAI_API_KEY en el servidor.',
+                'AI analysis not configured — missing OPENAI_API_KEY on server.',
                 503
             );
         }
@@ -43,28 +43,28 @@ const AiAnalysisService = {
 
         const interventions = await InterventionRepository.findByCouderId(couderId, periodFilter);
         if (!interventions.length) {
-            throw new AppError('No hay intervenciones para el periodo seleccionado', 400);
+            throw new AppError('No interventions found for the selected period', 400);
         }
 
         // ── Build prompt ─────────────────────────────────────────────
         const historyText = interventions
-            .map(i => `FECHA: ${i.session_date} HORA: ${i.session_time}\nTIPO: ${i.intervention_type}\nINTERVENTOR: ${i.added_by}\nNOTAS: ${i.notes}`)
+            .map(i => `DATE: ${i.session_date} TIME: ${i.session_time}\nTYPE: ${i.intervention_type}\nINTERVENTOR: ${i.added_by}\nNOTES: ${i.notes}`)
             .join('\n\n---\n\n');
 
         const systemPrompt =
-            'Eres un asistente clinico especializado en analisis de historial de intervenciones. ' +
-            'Responde UNICAMENTE con un objeto JSON valido. Sin markdown, sin texto adicional, sin comentarios. ' +
-            'No incluyas emojis ni caracteres especiales.';
+            'You are a clinical assistant specialized in intervention history analysis. ' +
+            'Respond ONLY with a valid JSON object. No markdown, no additional text, no comments. ' +
+            'Do not include emojis or special characters.';
 
         const userPrompt =
-            `Analiza el siguiente historial de intervenciones:\n\n` +
-            `Historial (${interventions.length} sesiones):\n${historyText}\n\n` +
-            `Genera un analisis clinico estructurado con estas tres secciones en espanol:\n` +
-            `1. "summary": sintesis general del historial incluyendo fechas clave y evolucion cronologica (3-4 oraciones).\n` +
-            `2. "diagnosis": mini-diagnostico de la situacion actual basado en la evolucion temporal (2-3 oraciones).\n` +
-            `3. "suggestions": array con 3 a 5 recomendaciones concretas para futuras intervenciones.\n\n` +
-            `IMPORTANTE: En el summary, menciona las fechas importantes, la frecuencia de intervenciones y los patrones temporales observados.\n` +
-            `Responde SOLO con este JSON: { "summary": "...", "diagnosis": "...", "suggestions": ["...", "..."] }`;
+            `Analyze the following intervention history:\n\n` +
+            `History (${interventions.length} sessions):\n${historyText}\n\n` +
+            `Generate a structured clinical analysis with these three sections in English:\n` +
+            `1. "summary": general synthesis of the history including key dates and chronological evolution (3-4 sentences).\n` +
+            `2. "diagnosis": mini-diagnosis of the current situation based on temporal evolution (2-3 sentences).\n` +
+            `3. "suggestions": array with 3 to 5 concrete recommendations for future interventions.\n\n` +
+            `IMPORTANT: In the summary, mention important dates, intervention frequency, and observed temporal patterns.\n` +
+            `Respond ONLY with this JSON: { "summary": "...", "diagnosis": "...", "suggestions": ["...", "..."] }`;
 
         // ── Call OpenAI API ───────────────────────────────────────
         let aiResult;
@@ -96,7 +96,7 @@ const AiAnalysisService = {
             // OpenAI response: content is in choices[0].message.content
             const rawText = data?.choices?.[0]?.message?.content;
             if (!rawText) {
-                throw new AppError('OpenAI devolvio una respuesta vacia', 502);
+                throw new AppError('OpenAI returned an empty response', 502);
             }
 
             // Strip markdown fences if present
@@ -105,12 +105,12 @@ const AiAnalysisService = {
 
         } catch (err) {
             if (err instanceof AppError) throw err;
-            throw new AppError(`Error al generar analisis IA: ${err.message}`, 502);
+            throw new AppError(`Error generating AI analysis: ${err.message}`, 502);
         }
 
         // ── Validate & normalise result ──────────────────────────────
         if (!aiResult.summary || !aiResult.diagnosis || !aiResult.suggestions) {
-            throw new AppError('La IA devolvio un analisis incompleto — intenta de nuevo.', 502);
+            throw new AppError('AI returned incomplete analysis — please try again.', 502);
         }
 
         const suggestions = Array.isArray(aiResult.suggestions)

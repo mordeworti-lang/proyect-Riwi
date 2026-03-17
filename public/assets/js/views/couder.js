@@ -12,11 +12,11 @@ const CouderView = (() => {
     let _selectedAiAnalysisIndex = 0;
 
     const INTERVENTION_TYPES = [
-        { id: 1, label: 'Evaluación Inicial' },
-        { id: 2, label: 'Seguimiento' },
-        { id: 3, label: 'Valoración de Riesgo' },
-        { id: 4, label: 'Cierre' },
-        { id: 5, label: 'Otro' },
+        { id: 1, label: 'Initial Evaluation' },
+        { id: 2, label: 'Follow-up' },
+        { id: 3, label: 'Risk Assessment' },
+        { id: 4, label: 'Closing' },
+        { id: 5, label: 'Other' },
     ];
 
     async function render(params) {

@@ -324,12 +324,12 @@ async function seedDatabase() {
         }
 
         // 6. Interventions (solo si no hay suficientes)
-        console.log('[seed] Creando intervenciones...');
+        console.log('[seed] Creating interventions...');
         const existingInterventionsCount = await client.query('SELECT COUNT(*) as count FROM interventions');
         const currentInterventions = parseInt(existingInterventionsCount.rows[0].count);
         
         if (currentInterventions > 2500) {
-            console.log(`[seed] [OK] Ya existen ${currentInterventions} intervenciones, omitiendo creación`);
+            console.log(`[seed] [OK] Already exist ${currentInterventions} interventions, skipping creation`);
         } else {
             const ivTypes = ['initial_evaluation', 'follow_up', 'risk_assessment', 'closing', 'other'];
             let ivCount = 0;
@@ -345,19 +345,19 @@ async function seedDatabase() {
                     let notes = '';
                     switch (type) {
                         case 'initial_evaluation':
-                            notes = `Evaluación inicial de ${couder.full_name}. Clan: ${couder.clan_name}. ${couder.lenguaje ? `Lenguaje: ${couder.lenguaje}.` : ''} Muestra buena disposición. Puntaje: ${couder.average_score}.`;
+                            notes = `Initial evaluation of ${couder.full_name}. Clan: ${couder.clan_name}. ${couder.lenguaje ? `Language: ${couder.lenguaje}.` : ''} Shows good disposition. Score: ${couder.average_score}.`;
                             break;
                         case 'follow_up':
-                            notes = `Seguimiento de ${couder.full_name}. Avance en actividades en ${couder.lenguaje || 'ruta básica'}. Estado: ${couder.status}.`;
+                            notes = `Follow-up of ${couder.full_name}. Progress in activities in ${couder.lenguaje || 'basic route'}. Status: ${couder.status}.`;
                             break;
                         case 'risk_assessment':
-                            notes = `Evaluación de riesgo para ${couder.full_name}. Se identifican áreas de oportunidad en ${couder.lenguaje || 'el programa'}.`;
+                            notes = `Risk assessment for ${couder.full_name}. Areas of opportunity identified in ${couder.lenguaje || 'the program'}.`;
                             break;
                         case 'closing':
-                            notes = `Cierre de intervención para ${couder.full_name}. Puntaje final: ${couder.average_score}. ${couder.lenguaje ? `Proyectos completados en ${couder.lenguaje}.` : ''}`;
+                            notes = `Closing intervention for ${couder.full_name}. Final score: ${couder.average_score}. ${couder.lenguaje ? `Projects completed in ${couder.lenguaje}.` : ''}`;
                             break;
                         default:
-                            notes = `Intervención general con ${couder.full_name} (${couder.clan_name}). ${couder.lenguaje ? `Trabajando en ${couder.lenguaje}.` : ''} Se documentan observaciones para seguimiento.`;
+                            notes = `General intervention with ${couder.full_name} (${couder.clan_name}). ${couder.lenguaje ? `Working on ${couder.lenguaje}.` : ''} Observations documented for follow-up.`;
                     }
 
                     await client.query(`
@@ -367,33 +367,33 @@ async function seedDatabase() {
                     ivCount++;
                 }
             }
-            console.log(`[seed] [OK] ${ivCount} intervenciones creadas`);
+            console.log(`[seed] [OK] ${ivCount} interventions created`);
         }
 
         // 7. AI analyses (solo si no hay suficientes)
-        console.log('[seed] Creando análisis IA...');
+        console.log('[seed] Creating AI analyses...');
         const existingAiCount = await client.query('SELECT COUNT(*) as count FROM ai_analyses');
         const currentAiAnalyses = parseInt(existingAiCount.rows[0].count);
         
         if (currentAiAnalyses > 25) {
-            console.log(`[seed] [OK] Ya existen ${currentAiAnalyses} análisis IA, omitiendo creación`);
+            console.log(`[seed] [OK] Already exist ${currentAiAnalyses} AI analyses, skipping creation`);
         } else {
             let aiCount = 0;
             const activeCouders = couders.filter(c => c.status === 'active').slice(0, 30);
 
             for (const couder of activeCouders) {
-                const summary = `Análisis de ${couder.full_name} del clan ${couder.clan_name}. ${couder.lenguaje ? `Especializado en ${couder.lenguaje}.` : 'Ruta básica.'} Puntaje promedio: ${couder.average_score}.`;
-                const diagnosis = `${couder.full_name} presenta nivel de desarrollo adecuado. ${couder.lenguaje ? `Buena aptitud para ${couder.lenguaje}.` : 'Buen progreso en ruta básica.'} Fortalezas en comunicación y trabajo en equipo.`;
+                const summary = `Analysis of ${couder.full_name} from clan ${couder.clan_name}. ${couder.lenguaje ? `Specialized in ${couder.lenguaje}.` : 'Basic route.'} Average score: ${couder.average_score}.`;
+                const diagnosis = `${couder.full_name} shows adequate development level. ${couder.lenguaje ? `Good aptitude for ${couder.lenguaje}.` : 'Good progress in basic route.'} Strengths in communication and teamwork.`;
                 const suggestions = couder.lenguaje 
-                    ? `1) Continuar con proyectos en ${couder.lenguaje}. 2) Fortalecer liderazgo técnico. 3) Fomentar colaboración en ${couder.lenguaje}.`
-                    : `1) Continuar plan actual. 2) Fortalecer liderazgo. 3) Fomentar proyectos colaborativos.`;
+                    ? `1) Continue with projects in ${couder.lenguaje}. 2) Strengthen technical leadership. 3) Foster collaboration in ${couder.lenguaje}.`
+                    : `1) Continue current plan. 2) Strengthen leadership. 3) Foster collaborative projects.`;
                 await client.query(`
                     INSERT INTO ai_analyses (couder_id, period_label, summary, diagnosis, suggestions)
                     VALUES ($1, 'all', $2, $3, $4)
                 `, [couder.id, summary, diagnosis, suggestions]);
                 aiCount++;
             }
-            console.log(`[seed] [OK] ${aiCount} análisis IA creados`);
+            console.log(`[seed] [OK] ${aiCount} AI analyses created`);
         }
 
         await client.query('COMMIT');
