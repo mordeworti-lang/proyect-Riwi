@@ -48,7 +48,7 @@ const AiAnalysisService = {
 
         // ── Build prompt ─────────────────────────────────────────────
         const historyText = interventions
-            .map(i => `[${i.session_date} ${i.session_time}] Interventor: ${i.added_by}\n${i.notes}`)
+            .map(i => `FECHA: ${i.session_date} HORA: ${i.session_time}\nTIPO: ${i.intervention_type}\nINTERVENTOR: ${i.added_by}\nNOTAS: ${i.notes}`)
             .join('\n\n---\n\n');
 
         const systemPrompt =
@@ -60,9 +60,10 @@ const AiAnalysisService = {
             `Analiza el siguiente historial de intervenciones:\n\n` +
             `Historial (${interventions.length} sesiones):\n${historyText}\n\n` +
             `Genera un analisis clinico estructurado con estas tres secciones en espanol:\n` +
-            `1. "summary": sintesis general del historial (2-3 oraciones).\n` +
-            `2. "diagnosis": mini-diagnostico de la situacion actual (2-3 oraciones).\n` +
+            `1. "summary": sintesis general del historial incluyendo fechas clave y evolucion cronologica (3-4 oraciones).\n` +
+            `2. "diagnosis": mini-diagnostico de la situacion actual basado en la evolucion temporal (2-3 oraciones).\n` +
             `3. "suggestions": array con 3 a 5 recomendaciones concretas para futuras intervenciones.\n\n` +
+            `IMPORTANTE: En el summary, menciona las fechas importantes, la frecuencia de intervenciones y los patrones temporales observados.\n` +
             `Responde SOLO con este JSON: { "summary": "...", "diagnosis": "...", "suggestions": ["...", "..."] }`;
 
         // ── Call OpenAI API ───────────────────────────────────────

@@ -308,8 +308,62 @@ const CouderView = (() => {
         _renderContent();
     }
 
-    function _selectAiAnalysis(index) {
+    async function _selectAiAnalysis(index) {
         _selectedAiAnalysisIndex = parseInt(index);
+        
+        // Obtener el análisis seleccionado y sus fechas
+        const selectedAnalysis = _aiAnalyses[_selectedAiAnalysisIndex];
+        
+        try {
+            // Mostrar indicador de carga
+            const selector = document.getElementById('ai-date-selector');
+            if (selector) {
+                selector.disabled = true;
+                selector.style.opacity = '0.6';
+            }
+            
+            // Si el análisis tiene un período específico, usar esas fechas
+            let requestBody = {};
+            
+            if (selectedAnalysis && selectedAnalysis.periodLabel && selectedAnalysis.periodLabel !== 'all') {
+                // Extraer fechas del periodLabel (formato: "YYYY-MM-DD to YYYY-MM-DD" o "YYYY-MM-DD")
+                const dateRange = selectedAnalysis.periodLabel;
+                let fromDate, toDate;
+                
+                if (dateRange.includes(' to ')) {
+                    [fromDate, toDate] = dateRange.split(' to ');
+                } else if (dateRange.match(/^\d{4}-\d{2}-\d{2}$/)) {
+                    fromDate = toDate = dateRange;
+                }
+                
+                if (fromDate && toDate) {
+                    requestBody = {
+                        from: fromDate,
+                        to: toDate,
+                        periodLabel: selectedAnalysis.periodLabel
+                    };
+                }
+            }
+            
+            // Generar nuevo análisis con el filtro de fechas específico
+            const analysis = await Api.post('/couders/' + _couder.id + '/ai-analysis', requestBody);
+            
+            // Actualizar el análisis seleccionado con el nuevo análisis generado
+            _aiAnalyses[_selectedAiAnalysisIndex] = analysis;
+            
+            Toast.show('Análisis actualizado para el período seleccionado', 'success');
+        } catch (err) {
+            console.error('Error al generar análisis:', err);
+            Toast.show('Error al actualizar análisis: ' + err.message, 'error');
+        } finally {
+            // Restaurar selector
+            const selector = document.getElementById('ai-date-selector');
+            if (selector) {
+                selector.disabled = false;
+                selector.style.opacity = '1';
+            }
+        }
+        
         _renderContent();
     }
 
