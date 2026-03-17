@@ -102,7 +102,9 @@ CREATE INDEX IF NOT EXISTS idx_interventions_couder  ON interventions(couder_id)
 CREATE INDEX IF NOT EXISTS idx_interventions_user    ON interventions(user_id);
 CREATE INDEX IF NOT EXISTS idx_interventions_date    ON interventions(session_date);
 CREATE INDEX IF NOT EXISTS idx_clans_cohort          ON clans(cohort_id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_clans_name_cohort ON clans(name, cohort_id);
 CREATE INDEX IF NOT EXISTS idx_cohorts_sede          ON cohorts(sede_id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_cohorts_name_sede ON cohorts(name, sede_id);
 
 -- ── Seed base data ────────────────────────────────────────────────────────────
 INSERT INTO roles(name) VALUES ('admin'),('lider'),('mentor'),('interventor')
@@ -115,7 +117,7 @@ INSERT INTO intervention_types(name)
     VALUES ('initial_evaluation'),('follow_up'),('risk_assessment'),('closing'),('other')
     ON CONFLICT (name) DO NOTHING;
 
-INSERT INTO sedes(name) VALUES ('Medellín'),('Barranquilla')
+INSERT INTO sedes(name) VALUES ('Medellin'),('Barranquilla')
     ON CONFLICT (name) DO NOTHING;
 -- Note: run `npm run seed` to create demo users and sample data
 
