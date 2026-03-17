@@ -29,7 +29,7 @@ class MockPostgres {
                     id: 1,
                     full_name: 'Interventor Demo',
                     email: 'interventor@clinica.com',
-                    password_hash: '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj3bp.Gm.F5e', // Interventor1234!
+                    password_hash: '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj3bp.Gm.F5e', // Hash de demo - cambiar en producción
                     role_id: 4,
                     is_active: true,
                     created_at: new Date()

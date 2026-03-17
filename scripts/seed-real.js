@@ -70,7 +70,7 @@ async function seedDatabase() {
         ];
 
         for (const staff of staffUsers) {
-            const passwordHash = await bcrypt.hash('password123', 12);
+            const passwordHash = await bcrypt.hash('InterventorSecure2024!', 12);
             const result = await client.query(`
                 INSERT INTO users (full_name, email, password_hash, role_id, is_active)
                 VALUES ($1, $2, $3, (SELECT id FROM roles WHERE name = 'interventor'), true)

@@ -88,16 +88,14 @@ const LoginView = (() => {
                                     <div class="relative group">
                                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                             <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002 2h-2a2 2 0 002-2v-2a2 2 0 00-2-2h-2a2 2 0 012 2v2a2 2 0 002 2h6a2 2 0 002 2v2a2 2 0 002-2V11a2 2 0 00-2-2h-6a2 2 0 00-2 2v6a2 2 0 002 2h6a2 2 0 002 2v6z"/>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002 2h-2a2 2 0 002-2v-2a2 2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2h6a2 2 0 002 2v2a2 2 0 002-2V11a2 2 0 00-2-2h-6a2 2 0 00-2 2v6a2 2 0 002 2h6a2 2 0 002 2v6z"/>
                                             </svg>
                                         </div>
                                         <input 
                                             type="password" 
                                             id="password" 
-                                            value="Interventor1234!"
-                                            class="w-full bg-gray-700/50 backdrop-blur-sm border border-gray-600 rounded-lg px-4 py-3 pl-12 text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
-                                            placeholder="••••••••••"
-                                            required
+                                            placeholder="Contraseña"
+                                            class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none"
                                         >
                                     </div>
                                 </div>

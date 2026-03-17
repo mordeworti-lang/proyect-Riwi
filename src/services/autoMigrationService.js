@@ -4,13 +4,14 @@ const bcrypt = require('bcryptjs');
 const SALT_ROUNDS = 12;
 
 // Datos de migración embebidos para evitar dependencias de archivos externos
+// NOTA: Estos son datos de ejemplo para desarrollo - NO usar en producción
 const MIGRATION_DATA = {
   users: [
     { id: 1, full_name: 'Interventor Demo', email: 'interventor@clinica.com', password: 'Interventor1234!', role_id: 1, is_active: true },
-    { id: 2, full_name: 'Lili Martinez', email: 'lili.martinez@clinica.com', password: 'Lili1234!', role_id: 1, is_active: true },
-    { id: 3, full_name: 'Alejandra Rodriguez', email: 'alejandra.rodriguez@clinica.com', password: 'Alejandra1234!', role_id: 1, is_active: true },
-    { id: 4, full_name: 'Bybelas Gonzalez', email: 'bybelas.gonzalez@clinica.com', password: 'Bybelas1234!', role_id: 1, is_active: true },
-    { id: 5, full_name: 'Carlos Lopez', email: 'carlos.lopez@clinica.com', password: 'Carlos1234!', role_id: 1, is_active: true }
+    { id: 2, full_name: 'Lili Martinez', email: 'lili.martinez@clinica.com', password: 'InterventorSecure2024!', role_id: 1, is_active: true },
+    { id: 3, full_name: 'Alejandra Rodriguez', email: 'alejandra.rodriguez@clinica.com', password: 'InterventorSecure2024!', role_id: 1, is_active: true },
+    { id: 4, full_name: 'Bybelas Gonzalez', email: 'bybelas.gonzalez@clinica.com', password: 'InterventorSecure2024!', role_id: 1, is_active: true },
+    { id: 5, full_name: 'Carlos Lopez', email: 'carlos.lopez@clinica.com', password: 'InterventorSecure2024!', role_id: 1, is_active: true }
   ],
   couders: [
     { id: 1001, national_id: '123456789', full_name: 'Juan Perez Garcia', email: 'juan.perez@email.com', phone: '3001234567', clan_id: 57, status: 'active', average_score: 85.5 },
