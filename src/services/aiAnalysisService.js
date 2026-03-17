@@ -57,13 +57,13 @@ const AiAnalysisService = {
             'Do not include emojis or special characters.';
 
         const userPrompt =
-            `Analyze the following intervention history:\n\n` +
+            `Analyze the following intervention history for a couder:\n\n` +
             `History (${interventions.length} sessions):\n${historyText}\n\n` +
             `Generate a structured clinical analysis with these three sections in English:\n` +
-            `1. "summary": general synthesis of the history including key dates and chronological evolution (3-4 sentences).\n` +
-            `2. "diagnosis": mini-diagnosis of the current situation based on temporal evolution (2-3 sentences).\n` +
-            `3. "suggestions": array with 3 to 5 concrete recommendations for future interventions.\n\n` +
-            `IMPORTANT: In the summary, mention important dates, intervention frequency, and observed temporal patterns.\n` +
+            `1. "summary": general synthesis of the couder's history including key dates and chronological evolution (3-4 sentences).\n` +
+            `2. "diagnosis": mini-diagnosis of the couder's current situation based on temporal evolution (2-3 sentences).\n` +
+            `3. "suggestions": array with 3 to 5 concrete recommendations for future interventions with the couder.\n\n` +
+            `IMPORTANT: In the summary, mention important dates, intervention frequency, and observed temporal patterns for the couder.\n` +
             `Respond ONLY with this JSON: { "summary": "...", "diagnosis": "...", "suggestions": ["...", "..."] }`;
 
         // ── Call OpenAI API ───────────────────────────────────────
