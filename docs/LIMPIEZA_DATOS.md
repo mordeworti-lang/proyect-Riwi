@@ -13,11 +13,11 @@ Durante el desarrollo del sistema DataCore, se acumularon datos de prueba de mú
 ### 1. Script de Limpieza (`clean-bad-data.js`)
 
 **Características:**
-- ✅ Elimina datos basura de forma segura
-- ✅ Mantiene integridad referencial
-- ✅ Preserva tablas de lookup (sedes, routes, roles, intervention_types)
-- ✅ Opción de conservar usuarios demo
-- ✅ Transacciones atómicas (rollback si hay error)
+- [OK] Elimina datos basura de forma segura
+- [OK] Mantiene integridad referencial
+- [OK] Preserva tablas de lookup (sedes, routes, roles, intervention_types)
+- [OK] Opción de conservar usuarios demo
+- [OK] Transacciones atómicas (rollback si hay error)
 
 ### 2. Comandos Disponibles
 
@@ -109,7 +109,7 @@ npm run check-data
 
 Salida esperada:
 ```
-📊 Estado actual de datos:
+[INFO] Estado actual de datos:
    ai_analyses         : 0 registros
    interventions       : 0 registros
    couders            : 0 registros
@@ -124,11 +124,11 @@ Salida esperada:
 
 ## Beneficios
 
-✅ **Sin datos basura** - Base de datos limpia y consistente  
-✅ **Integridad referencial** - Sin errores de FK  
-✅ **Datos consistentes** - Todos los datos siguen el mismo formato  
-✅ **Rápido y seguro** - Transacciones atómicas  
-✅ **Reproducible** - Mismo proceso en cualquier ambiente  
+[OK] **Sin datos basura** - Base de datos limpia y consistente  
+[OK] **Integridad referencial** - Sin errores de FK  
+[OK] **Datos consistentes** - Todos los datos siguen el mismo formato  
+[OK] **Rápido y seguro** - Transacciones atómicas  
+[OK] **Reproducible** - Mismo proceso en cualquier ambiente  
 
 ## Notas Importantes
 

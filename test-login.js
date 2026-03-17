@@ -15,31 +15,31 @@ async function testLogin() {
     );
     
     if (userResult.rows.length === 0) {
-      console.log('❌ Usuario no encontrado');
+      console.log('[ERROR] Usuario no encontrado');
       return;
     }
     
     const user = userResult.rows[0];
-    console.log('✅ Usuario encontrado:', user.email);
-    console.log('✅ Activo:', user.is_active);
-    console.log('✅ Password hash length:', user.password_hash.length);
+    console.log('[OK] Usuario encontrado:', user.email);
+    console.log('[OK] Activo:', user.is_active);
+    console.log('[OK] Password hash length:', user.password_hash.length);
     
     // 2. Verificar la contraseña
     const isValid = await bcrypt.compare('Interventor1234!', user.password_hash);
-    console.log('✅ Contraseña válida:', isValid);
+    console.log('[OK] Contraseña válida:', isValid);
     
     if (!isValid) {
-      console.log('🔧 Actualizando password hash...');
+      console.log('[FIX] Actualizando password hash...');
       const newHash = await bcrypt.hash('Interventor1234!', 12);
       await pool.query(
         'UPDATE users SET password_hash = $1 WHERE email = $2',
         [newHash, 'interventor@clinica.com']
       );
-      console.log('✅ Password actualizado');
+      console.log('[OK] Password actualizado');
       
       // Verificar de nuevo
       const newValid = await bcrypt.compare('Interventor1234!', newHash);
-      console.log('✅ Nueva contraseña válida:', newValid);
+      console.log('[OK] Nueva contraseña válida:', newValid);
     }
     
     // 3. Verificar rol
@@ -48,10 +48,10 @@ async function testLogin() {
       ['interventor@clinica.com']
     );
     
-    console.log('✅ Rol del usuario:', roleResult.rows[0]?.name);
+    console.log('[OK] Rol del usuario:', roleResult.rows[0]?.name);
     
   } catch (err) {
-    console.error('❌ Error:', err.message);
+    console.error('[ERROR] Error:', err.message);
   } finally {
     await pool.end();
   }

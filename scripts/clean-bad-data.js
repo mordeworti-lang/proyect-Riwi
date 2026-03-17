@@ -19,36 +19,36 @@ async function cleanBadData() {
 
     try {
         await client.query('BEGIN');
-        console.log('🧹 Limpiando datos basura de migraciones anteriores...');
+        console.log('[CLEAN] Limpiando datos basura de migraciones anteriores...');
 
         // 1. Borrar análisis de IA (depende de couders)
-        console.log('🗑️  Borrando ai_analyses...');
+        console.log('[DELETE] Borrando ai_analyses...');
         const resultAi = await client.query('DELETE FROM ai_analyses');
-        console.log(`   ✅ ${resultAi.rowCount} análisis de IA eliminados`);
+        console.log(`   [OK] ${resultAi.rowCount} análisis de IA eliminados`);
 
         // 2. Borrar intervenciones (depende de couders y users)
-        console.log('🗑️  Borrando interventions...');
+        console.log('[DELETE] Borrando interventions...');
         const resultIv = await client.query('DELETE FROM interventions');
-        console.log(`   ✅ ${resultIv.rowCount} intervenciones eliminadas`);
+        console.log(`   [OK] ${resultIv.rowCount} intervenciones eliminadas`);
 
         // 3. Borrar couders (aprendices)
-        console.log('🗑️  Borrando couders...');
+        console.log('[DELETE] Borrando couders...');
         const resultCouders = await client.query('DELETE FROM couders');
-        console.log(`   ✅ ${resultCouders.rowCount} couders eliminados`);
+        console.log(`   [OK] ${resultCouders.rowCount} couders eliminados`);
 
         // 4. Borrar clans (grupos)
-        console.log('🗑️  Borrando clans...');
+        console.log('[DELETE] Borrando clans...');
         const resultClans = await client.query('DELETE FROM clans');
-        console.log(`   ✅ ${resultClans.rowCount} clans eliminados`);
+        console.log(`   [OK] ${resultClans.rowCount} clans eliminados`);
 
         // 5. Borrar cohorts (cortes)
-        console.log('🗑️  Borrando cohorts...');
+        console.log('[DELETE] Borrando cohorts...');
         const resultCohorts = await client.query('DELETE FROM cohorts');
-        console.log(`   ✅ ${resultCohorts.rowCount} cohorts eliminados`);
+        console.log(`   [OK] ${resultCohorts.rowCount} cohorts eliminados`);
 
         // 6. Opcional: mantener usuarios demo o borrar todos
         if (keepUsers) {
-            console.log('🔒 Manteniendo usuarios demo (opción --keep-users)');
+            console.log('[KEEP] Manteniendo usuarios demo (opción --keep-users)');
             // Borrar solo usuarios que no sean demo
             const resultUsers = await client.query(`
                 DELETE FROM users 
@@ -60,8 +60,8 @@ async function cleanBadData() {
                     'bybelas@clinica.com'
                 )
             `);
-            console.log(`   ✅ ${resultUsers.rowCount} usuarios no-demo eliminados`);
-            console.log('   🔒 Usuarios demo conservados:');
+            console.log(`   [OK] ${resultUsers.rowCount} usuarios no-demo eliminados`);
+            console.log('   [KEEP] Usuarios demo conservados:');
             const demoUsers = await client.query(`
                 SELECT email, full_name FROM users 
                 WHERE email IN (
@@ -74,18 +74,18 @@ async function cleanBadData() {
             `);
             demoUsers.rows.forEach(u => console.log(`      - ${u.email} (${u.full_name})`));
         } else {
-            console.log('🗑️  Borrando todos los users...');
+            console.log('[DELETE] Borrando todos los users...');
             const resultUsers = await client.query('DELETE FROM users');
-            console.log(`   ✅ ${resultUsers.rowCount} usuarios eliminados`);
+            console.log(`   [OK] ${resultUsers.rowCount} usuarios eliminados`);
         }
 
         // 7. NO borrar tablas de lookup (sedes, routes, roles, intervention_types)
-        console.log('🔒 Manteniendo tablas de lookup (sedes, routes, roles, intervention_types)');
+        console.log('[KEEP] Manteniendo tablas de lookup (sedes, routes, roles, intervention_types)');
 
         await client.query('COMMIT');
 
-        console.log('\n✨ Limpieza completada exitosamente!');
-        console.log('📊 Estado de tablas de lookup:');
+        console.log('\n[SUCCESS] Limpieza completada exitosamente!');
+        console.log('[INFO] Estado de tablas de lookup:');
         
         const tables = ['sedes', 'routes', 'roles', 'intervention_types'];
         for (const table of tables) {
@@ -93,13 +93,13 @@ async function cleanBadData() {
             console.log(`   ${table}: ${result.rows[0].count} registros`);
         }
 
-        console.log('\n🔄 Para ejecutar la migración final:');
+        console.log('\n[NEXT] Para ejecutar la migración final:');
         console.log('   npm run migrate');
         console.log('   npm run seed');
 
     } catch (err) {
         await client.query('ROLLBACK');
-        console.error('❌ Error en limpieza:', err.message);
+        console.error('[ERROR] Error en limpieza:', err.message);
         process.exitCode = 1;
     } finally {
         client.release();
@@ -111,7 +111,7 @@ async function cleanBadData() {
 async function checkDataStatus() {
     const client = await pool.connect();
     try {
-        console.log('\n📊 Estado actual de datos:');
+        console.log('\n[INFO] Estado actual de datos:');
         
         const tables = [
             'ai_analyses', 'interventions', 'couders', 
