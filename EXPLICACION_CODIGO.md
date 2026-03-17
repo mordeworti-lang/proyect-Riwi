@@ -7,14 +7,18 @@
 ## 📋 **ÍNDICE DE LA PRESENTACIÓN**
 
 1. [Visión General del Proyecto](#1-visión-general-del-proyecto)
-2. [Integración con Inteligencia Artificial](#2-integración-con-inteligencia-artificial)
-3. [Diseño de Base de Datos](#3-diseño-de-base-de-datos)
-4. [Conexión Backend - Base de Datos](#4-conexión-backend---base-de-datos)
-5. [Conexión Frontend - Backend](#5-conexión-frontend---backend)
-6. [Testing Driven Development (TDD)](#6-testing-driven-development-tdd)
-7. [Flujo de Encriptación y JWT](#7-flujo-de-encriptación-y-jwt)
-8. [Preguntas Frecuentes](#8-preguntas-frecuentes)
-9. [Conclusión](#9-conclusión)
+2. [Tecnologías Utilizadas y su Propósito](#2-tecnologías-utilizadas-y-su-propósito)
+3. [Integración con Inteligencia Artificial](#3-integración-con-inteligencia-artificial)
+4. [Diseño de Base de Datos](#4-diseño-de-base-de-datos)
+5. [Conexión Backend - Base de Datos](#5-conexión-backend---base-de-datos)
+6. [Conexión Frontend - Backend](#6-conexión-frontend---backend)
+7. [Testing Driven Development (TDD)](#7-testing-driven-development-tdd)
+8. [Flujo de Encriptación y JWT](#8-flujo-de-encriptación-y-jwt)
+9. [Sistema de Audio (Text-to-Speech)](#9-sistema-de-audio-text-to-speech)
+10. [Flujo Completo de Registro y Login](#10-flujo-completo-de-registro-y-login)
+11. [Ubicación Exacta de Componentes](#11-ubicación-exacta-de-componentes)
+12. [Preguntas Frecuentes](#12-preguntas-frecuentes)
+13. [Conclusión](#13-conclusión)
 
 ---
 
@@ -53,7 +57,118 @@ Frontend (SPA) ←→ Backend API ←→ Base de Datos PostgreSQL
 
 ---
 
-## 2. INTEGRACIÓN CON INTELIGENCIA ARTIFICIAL
+## 2. TECNOLOGÍAS UTILIZADAS Y SU PROPÓSITO
+
+### **🎯 BACKEND (Node.js)**
+
+#### **Node.js 18+**
+- **Propósito**: Runtime JavaScript del lado del servidor
+- **Por qué**: Alto rendimiento, escalabilidad, ecosistema npm
+- **Uso**: Ejecutar toda la lógica del servidor, API, y conexión a BD
+
+#### **Express 5**
+- **Propósito**: Framework web para Node.js
+- **Por qué**: Manejo de rutas, middleware, y peticiones HTTP
+- **Uso**: Crear endpoints API, middleware de autenticación, manejo de errores
+
+#### **PostgreSQL 14+**
+- **Propósito**: Base de datos relacional robusta
+- **Por qué**: ACID compliance, transacciones seguras, escalabilidad
+- **Uso**: Almacenar todos los datos: usuarios, couders, intervenciones, análisis
+
+#### **bcryptjs**
+- **Propósito**: Encriptación de contraseñas
+- **Por qué**: Hashing seguro con salt, resistencia a ataques
+- **Uso**: Encriptar contraseñas de usuarios con 12 rounds de seguridad
+
+#### **jsonwebtoken (JWT)**
+- **Propósito**: Tokens de autenticación sin estado
+- **Por qué**: Autenticación escalable, sin sesiones en servidor
+- **Uso**: Generar access tokens (15m) y refresh tokens (7d)
+
+#### **dotenv**
+- **Propósito**: Manejo de variables de entorno
+- **Por qué**: Separar configuración del código, seguridad
+- **Uso**: Cargar DATABASE_URL, JWT_SECRET, OPENAI_API_KEY
+
+#### **node-fetch**
+- **Propósito**: Cliente HTTP para Node.js
+- **Por qué**: Llamadas a APIs externas (OpenAI)
+- **Uso**: Comunicarse con OpenAI API para análisis de IA
+
+### **🎨 FRONTEND (Vanilla JavaScript)**
+
+#### **Vanilla JavaScript ES6+**
+- **Propósito**: Lógica del frontend sin frameworks
+- **Por qué**: Rápido, ligero, sin dependencias pesadas
+- **Uso**: SPA routing, manejo de DOM, llamadas al API
+
+#### **Tailwind CSS 3**
+- **Propósito**: Framework CSS utilitario
+- **Por qué**: Diseño rápido, responsive, sin CSS personalizado
+- **Uso**: Estilos profesionales, animaciones, diseño responsive
+
+#### **Web Speech API (Navegador)**
+- **Propósito**: Text-to-Speech nativo
+- **Por qué**: Accesibilidad, experiencia de usuario mejorada
+- **Uso**: Leer análisis de IA en voz alta
+
+#### **Fetch API**
+- **Propósito**: Llamadas HTTP desde el navegador
+- **Por qué**: Nativo, promesas, moderno
+- **Uso**: Comunicación con el backend API
+
+### **🤖 INTELIGENCIA ARTIFICIAL**
+
+#### **OpenAI GPT-3.5 Turbo**
+- **Propósito**: Análisis clínico con IA
+- **Por qué**: Comprensión de lenguaje natural, análisis predictivo
+- **Uso**: Generar resúmenes, diagnósticos, y sugerencias clínicas
+
+#### **OpenAI API**
+- **Propósito**: Interfaz para servicios de OpenAI
+- **Por qué**: Acceso programático a modelos GPT
+- **Uso**: Enviar prompts de intervenciones y recibir análisis
+
+### **🧪 TESTING Y CALIDAD**
+
+#### **Jest**
+- **Propósito**: Framework de testing JavaScript
+- **Por qué**: Testing unitario, integración, cobertura
+- **Uso**: Tests de autenticación, controladores, servicios
+
+#### **Supertest**
+- **Propósito**: Testing de endpoints HTTP
+- **Por qué**: Simular peticiones HTTP en tests
+- **Uso**: Tests de integración de la API
+
+### **🚀 DESPLIEGUE Y OPERACIONES**
+
+#### **Railway**
+- **Propósito**: Plataforma de despliegue cloud
+- **Por qué**: Despliegue automático, escalabilidad, PostgreSQL gestionado
+- **Uso**: Hospedar aplicación en producción
+
+#### **Git**
+- **Propósito**: Control de versiones
+- **Por qué**: Seguimiento de cambios, colaboración
+- **Uso**: Versionar código, despliegue automático
+
+### **🔐 SEGURIDAD**
+
+#### **JWT (JSON Web Tokens)**
+- **Propósito**: Autenticación sin estado
+- **Por qué**: Escalable, seguro, estándar industrial
+- **Uso**: Mantener sesiones de usuario seguras
+
+#### **Helmet**
+- **Propósito**: Headers de seguridad
+- **Por qué**: Protección contra XSS, clickjacking, etc.
+- **Uso**: Configurar seguridad HTTP
+
+---
+
+## 3. INTEGRACIÓN CON INTELIGENCIA ARTIFICIAL
 
 ### **¿Cómo Tratamos la IA?**
 
@@ -157,6 +272,458 @@ function sanitizeData(data) {
                .replace(/\b[\w._%+-]+@[\w.-]+\.[A-Z]{2,}\b/gi, '[EMAIL]'); // Oculta emails
 }
 ```
+
+### **🔧 CONFIGURACIÓN COMPLETA DE LA IA**
+
+#### **OpenAI GPT-3.5 Turbo - Configuración:**
+- **Modelo**: `gpt-3.5-turbo`
+- **Propósito**: Análisis clínico de intervenciones
+- **Por qué este modelo**:
+  - Comprensión avanzada de lenguaje natural
+  - Respuestas consistentes y estructuradas
+  - Costo-efectivo para producción
+  - Soporta español e inglés
+  - Temperatura configurable para consistencia
+
+#### **Variables de Entorno para IA:**
+```javascript
+// 📁 src/config/env.js
+require('dotenv').config();
+
+// Validación de API Key de OpenAI
+if (process.env.NODE_ENV === 'production' && !process.env.OPENAI_API_KEY) {
+    console.warn('⚠️  OPENAI_API_KEY not configured - AI features disabled');
+}
+
+module.exports = {
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+    OPENAI_MODEL: process.env.OPENAI_MODEL || 'gpt-3.5-turbo',
+    OPENAI_API_URL: process.env.OPENAI_API_URL || 'https://api.openai.com/v1/chat/completions'
+};
+```
+
+#### **Configuración en Railway (.env):**
+```bash
+# 🔑 Clave de OpenAI (obligatoria para IA)
+OPENAI_API_KEY=sk-your-openai-api-key-here
+
+# 🤖 Modelo a usar (opcional, por defecto gpt-3.5-turbo)
+OPENAI_MODEL=gpt-3.5-turbo
+
+# 🌐 URL de la API (opcional, por defecto la de OpenAI)
+OPENAI_API_URL=https://api.openai.com/v1/chat/completions
+```
+
+#### **Parámetros de OpenAI:**
+```javascript
+// 🎯 Configuración de llamada a OpenAI
+const openAIConfig = {
+    model: 'gpt-3.5-turbo',      // Modelo específico
+    temperature: 0.3,             // 🌡️ Baja temperatura para consistencia
+    max_tokens: 1024,            // 📝 Límite de tokens (respuestas concisas)
+    top_p: 1,                   // 🔽 Muestreo determinista
+    frequency_penalty: 0,        // 🚫 Sin penalización de frecuencia
+    presence_penalty: 0,         // 🚫 Sin penalización de presencia
+};
+```
+
+### **🏗️ ARQUITECTURA COMPLETA DEL SERVICIO IA**
+
+#### **📁 Ubicación del Código IA:**
+```
+📁 src/services/aiAnalysisService.js  ← 🎯 SERVICIO PRINCIPAL DE IA
+├── generateAnalysis()              ← Método principal
+├── buildSecurePrompt()             ← Construcción de prompts seguros
+├── callOpenAI()                    ← Comunicación con OpenAI
+├── sanitizeNotes()                 ← Limpieza de datos sensibles
+└── validateAIResponse()            ← Validación de respuesta
+
+📁 src/controllers/aiAnalysisController.js  ← 🎯 ENDPOINTS HTTP
+├── generateAnalysis()              ← POST /couders/:id/ai-analysis
+└── getAnalyses()                   ← GET /couders/:id/ai-analyses
+
+📁 src/repositories/aiAnalysisRepository.js ← 🎁 ALMACENAMIENTO DE ANÁLISIS
+├── create()                        ← Guardar análisis en BD
+├── findByCouderId()                ← Obtener análisis por couder
+└── delete()                        ← Eliminar análisis
+```
+
+#### **🔍 Flujo Completo del Servicio IA:**
+```javascript
+// 📁 src/services/aiAnalysisService.js
+class AIAnalysisService {
+    async generateAnalysis(couderId, periodFilter) {
+        try {
+            // 🎯 PASO 1: Obtener datos del couder
+            const couder = await CouderRepository.findById(couderId);
+            if (!couder) {
+                throw new NotFoundError('Couder not found');
+            }
+
+            // 🎯 PASO 2: Obtener intervenciones
+            const interventions = await InterventionRepository.findByCouderId(couderId, periodFilter);
+            if (!interventions.length) {
+                throw new AppError('No interventions found for the selected period', 400);
+            }
+
+            // 🎯 PASO 3: Construir prompt SEGURO (sin datos personales del couder)
+            const historyText = this.buildSecurePrompt(interventions);
+            
+            // 🎯 PASO 4: Llamar a OpenAI
+            const analysis = await this.callOpenAI(historyText);
+            
+            // 🎯 PASO 5: Validar respuesta
+            const validatedAnalysis = this.validateAIResponse(analysis);
+            
+            // 🎯 PASO 6: Guardar en base de datos
+            const savedAnalysis = await AIAnalysisRepository.create({
+                couder_id: couderId,
+                period_label: periodFilter.label || 'Custom Period',
+                summary: validatedAnalysis.summary,
+                diagnosis: validatedAnalysis.diagnosis,
+                suggestions: JSON.stringify(validatedAnalysis.suggestions),
+                created_at: new Date()
+            });
+
+            console.log('✅ AI Analysis generated successfully for couder:', couderId);
+            return savedAnalysis;
+
+        } catch (error) {
+            console.error('❌ AI Analysis Error:', error);
+            throw new AppError('Failed to generate AI analysis', 500);
+        }
+    }
+
+    // 🛡️ MÉTODO CRÍTICO: Construcción de Prompt SEGURO
+    buildSecurePrompt(interventions) {
+        return interventions
+            .map(i => `DATE: ${i.session_date} TIME: ${i.session_time}\nTYPE: ${i.intervention_type}\nINTERVENTOR: ${i.added_by}\nNOTES: ${this.sanitizeNotes(i.notes)}`)
+            .join('\n\n---\n\n');
+    }
+
+    // 🔒 SANITIZACIÓN DE NOTAS (remover datos sensibles)
+    sanitizeNotes(notes) {
+        if (!notes) return 'No notes available';
+        
+        return notes
+            // Ocultar cédulas (8+ dígitos)
+            .replace(/\b\d{8,}\b/g, '[ID]')
+            // Ocultar emails
+            .replace(/\b[\w._%+-]+@[\w.-]+\.[A-Z]{2,}\b/gi, '[EMAIL]')
+            // Ocultar números de teléfono
+            .replace(/\b\d{10,}\b/g, '[PHONE]')
+            // Ocultar nombres completos (aproximación)
+            .replace(/\b[A-Z][a-z]+\s[A-Z][a-z]+\b/g, '[NAME]');
+    }
+
+    // 🤖 COMUNICACIÓN CON OPENAI
+    async callOpenAI(historyText) {
+        const { OPENAI_API_KEY, OPENAI_MODEL, OPENAI_API_URL } = require('../config/env');
+
+        if (!OPENAI_API_KEY) {
+            throw new AppError('OpenAI API key not configured', 500);
+        }
+
+        // 🎯 PROMPT DEL SISTEMA (siempre igual)
+        const systemPrompt = 
+            'You are a clinical assistant specialized in intervention history analysis. ' +
+            'Respond ONLY with a valid JSON object. No markdown, no additional text, no comments. ' +
+            'Do not include emojis or special characters.';
+
+        // 🎯 PROMPT DEL USUARIO (con datos del couder)
+        const userPrompt =
+            `Analyze the following intervention history for a couder:\n\n` +
+            `History (${interventions.length} sessions):\n${historyText}\n\n` +
+            `Generate a structured clinical analysis with these three sections in English:\n` +
+            `1. "summary": general synthesis of the couder's history including key dates and chronological evolution (3-4 sentences).\n` +
+            `2. "diagnosis": mini-diagnosis of the couder's current situation based on temporal evolution (2-3 sentences).\n` +
+            `3. "suggestions": array with 3 to 5 concrete recommendations for future interventions with the couder.\n\n` +
+            `IMPORTANT: In the summary, mention important dates, intervention frequency, and observed temporal patterns for the couder.\n` +
+            `Respond ONLY with this JSON: { "summary": "...", "diagnosis": "...", "suggestions": ["...", "..."] }`;
+
+        try {
+            console.log('🤖 Calling OpenAI API...');
+            
+            const response = await fetch(OPENAI_API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${OPENAI_API_KEY}`,
+                },
+                body: JSON.stringify({
+                    model: OPENAI_MODEL,
+                    messages: [
+                        { role: 'system', content: systemPrompt },
+                        { role: 'user', content: userPrompt },
+                    ],
+                    temperature: 0.3,        // 🌡️ Baja temperatura para consistencia
+                    max_tokens: 1024,       // 📝 Límite de tokens
+                    top_p: 1,              // 🔽 Muestreo determinista
+                    frequency_penalty: 0,   // 🚫 Sin penalización de frecuencia
+                    presence_penalty: 0,    // 🚫 Sin penalización de presencia
+                }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(`OpenAI API error: ${response.status} - ${errorData.error?.message || 'Unknown error'}`);
+            }
+
+            const aiResult = await response.json();
+            const analysis = JSON.parse(aiResult.choices[0].message.content);
+            
+            console.log('✅ OpenAI response received successfully');
+            return analysis;
+
+        } catch (error) {
+            console.error('❌ OpenAI API call failed:', error);
+            throw new AppError('AI service temporarily unavailable', 503);
+        }
+    }
+
+    // ✅ VALIDACIÓN DE RESPUESTA
+    validateAIResponse(analysis) {
+        if (!analysis || typeof analysis !== 'object') {
+            throw new Error('Invalid AI response format');
+        }
+
+        if (!analysis.summary || !analysis.diagnosis || !analysis.suggestions) {
+            throw new Error('AI response missing required fields');
+        }
+
+        if (!Array.isArray(analysis.suggestions) || analysis.suggestions.length === 0) {
+            throw new Error('AI suggestions must be a non-empty array');
+        }
+
+        // Validar que no contenga información personal
+        const hasPersonalInfo = /\b\d{8,}\b|\b[\w._%+-]+@[\w.-]+\.[A-Z]{2,}\b/gi.test(
+            JSON.stringify(analysis)
+        );
+
+        if (hasPersonalInfo) {
+            throw new Error('AI response contains personal information');
+        }
+
+        return analysis;
+    }
+}
+```
+
+### **🔌 CONEXIÓN POSTGRESQL - IA**
+
+#### **Repository de IA (Almacenamiento):**
+```javascript
+// 📁 src/repositories/aiAnalysisRepository.js
+const db = require('../config/postgres');
+
+class AIAnalysisRepository {
+    static async create(data) {
+        const query = `
+            INSERT INTO ai_analyses (couder_id, period_label, summary, diagnosis, suggestions, created_at)
+            VALUES ($1, $2, $3, $4, $5, NOW())
+            RETURNING *
+        `;
+        
+        const values = [
+            data.couder_id,
+            data.period_label,
+            data.summary,
+            data.diagnosis,
+            data.suggestions
+        ];
+        
+        const result = await db.query(query, values);
+        return result.rows[0];
+    }
+
+    static async findByCouderId(couderId) {
+        const query = `
+            SELECT * FROM ai_analyses 
+            WHERE couder_id = $1 
+            ORDER BY created_at DESC
+        `;
+        
+        const result = await db.query(query, [couderId]);
+        return result.rows;
+    }
+
+    static async findById(id) {
+        const query = `SELECT * FROM ai_analyses WHERE id = $1`;
+        const result = await db.query(query, [id]);
+        return result.rows[0];
+    }
+
+    static async delete(id) {
+        const query = `DELETE FROM ai_analyses WHERE id = $1`;
+        await db.query(query, [id]);
+        return true;
+    }
+}
+
+module.exports = AIAnalysisRepository;
+```
+
+### **🌐 CONEXIÓN FRONTEND - IA**
+
+#### **API Client (Frontend):**
+```javascript
+// 📁 public/assets/js/api.js
+class API {
+    static async generateAIAnalysis(couderId) {
+        try {
+            console.log('🤖 Requesting AI analysis for couder:', couderId);
+            
+            const analysis = await this.post(`/couders/${couderId}/ai-analysis`, {});
+            
+            console.log('✅ AI analysis received:', analysis);
+            return analysis;
+            
+        } catch (error) {
+            console.error('❌ AI analysis error:', error);
+            throw error;
+        }
+    }
+}
+```
+
+#### **Vista de Couder (Frontend):**
+```javascript
+// 📁 public/assets/js/views/couder.js
+class CouderView {
+    static async generateAIAnalysis() {
+        try {
+            console.log('🤖 Generating AI analysis for couder:', _couder?.full_name || 'Unknown');
+            
+            // 🎯 VALIDACIÓN: Verificar que hay intervenciones
+            if (_interventions.length === 0) {
+                Toast.show('This couder has no registered interventions yet.', 'error');
+                return;
+            }
+
+            // 🎯 UI: Mostrar estado de carga
+            const btn = document.getElementById('btn-generate-ai');
+            const origText = btn.innerHTML;
+            btn.innerHTML = '<div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div> Generating...';
+            btn.disabled = true;
+
+            // 🌐 LLAMADA AL BACKEND
+            const analysis = await API.generateAIAnalysis(_couder.id);
+            
+            // 🔄 ACTUALIZAR ESTADO LOCAL
+            _aiAnalyses.unshift(analysis);
+            
+            // 🎨 RENDERIZAR NUEVO ANÁLISIS
+            this.renderContent();
+            
+            // 🎉 NOTIFICAR ÉXITO
+            Toast.show('Analysis generated and saved', 'success');
+            
+        } catch (error) {
+            console.error('❌ Error generating AI analysis:', error);
+            Toast.show('Error generating analysis: ' + error.message, 'error');
+        } finally {
+            // 🔄 RESTAURAR BOTÓN
+            if (btn) {
+                btn.innerHTML = origText;
+                btn.disabled = false;
+            }
+        }
+    }
+}
+```
+
+### **🔄 FLUJO COMPLETO DE CONEXIÓN IA**
+
+#### **📊 Diagrama de Flujo:**
+```
+Frontend (SPA)           Backend (Node.js)           PostgreSQL           OpenAI API
+     │                        │                        │                     │
+     │ 1. Click "Generate AI" │                        │                     │
+     ├───────────────────────→│                        │                     │
+     │                        │ 2. POST /couders/:id/ai-analysis │             │
+     │                        ├───────────────────────→│                     │
+     │                        │                        │ 3. SELECT interventions │
+     │                        │                        │    FROM couders      │
+     │                        │                        ├──────────────────────→│
+     │                        │                        │                     │
+     │                        │                        │ 4. Return interventions│
+     │                        │                        │←─────────────────────│
+     │                        │                        │                     │
+     │                        │ 5. Build secure prompt │                     │
+     │                        │ 6. Call OpenAI API    │                     │
+     │                        ├─────────────────────────────────────────────→│
+     │                        │                        │                     │
+     │                        │                        │                     │ 7. Generate analysis
+     │                        │                        │                     │
+     │                        │                        │←─────────────────────│
+     │                        │ 8. Receive AI response │                     │
+     │                        │                        │                     │
+     │                        │ 9. Save to database   │                     │
+     │                        ├───────────────────────→│                     │
+     │                        │                        │ 10. INSERT ai_analyses│
+     │                        │                        ├──────────────────────→│
+     │                        │                        │                     │
+     │                        │                        │ 11. Return saved analysis│
+     │                        │                        │←─────────────────────│
+     │                        │                        │                     │
+     │ 12. Return analysis     │                        │                     │
+     │←───────────────────────│                        │                     │
+     │                        │                        │                     │
+13. Update UI with new analysis                        │                     │
+     │                        │                        │                     │
+```
+
+### **🛡️ SEGURIDAD EN LA CONEXIÓN IA**
+
+#### **Capas de Seguridad:**
+```javascript
+// 🔑 1. API Key en variables de entorno (nunca en código)
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+
+// 🔒 2. Sanitización de datos del couder
+const sanitizeData = (data) => {
+    return data.replace(/\b\d{8,}\b/g, '[ID]')
+               .replace(/\b[\w._%+-]+@[\w.-]+\.[A-Z]{2,}\b/gi, '[EMAIL]');
+};
+
+// 🛡️ 3. Validación de respuesta de IA
+const validateResponse = (response) => {
+    const hasPersonalInfo = /\b\d{8,}\b|\b[\w._%+-]+@[\w.-]+\.[A-Z]{2,}\b/gi.test(response);
+    if (hasPersonalInfo) {
+        throw new Error('AI response contains personal information');
+    }
+    return response;
+};
+
+// 🔐 4. Headers seguros en llamadas a OpenAI
+const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${OPENAI_API_KEY}`,
+    'User-Agent': 'Project-Riwi/1.0'
+};
+```
+
+### **🎯 CONFIGURACIÓN EN RAILWAY**
+
+#### **Variables de Entorno en Railway:**
+```bash
+# 🗄️ PostgreSQL (automático de Railway)
+DATABASE_URL=postgresql://user:password@host:port/database
+
+# 🔑 OpenAI API (manual)
+OPENAI_API_KEY=sk-your-openai-api-key-here
+OPENAI_MODEL=gpt-3.5-turbo
+
+# 🛡️ JWT (manual)
+JWT_SECRET=your-super-secret-jwt-key-min-32-chars
+JWT_REFRESH_SECRET=your-super-secret-refresh-key-min-32-chars
+```
+
+#### **Conexión Automática:**
+1. **Railway crea PostgreSQL** → genera `DATABASE_URL`
+2. **Tu código usa `DATABASE_URL`** → se conecta automáticamente
+3. **OpenAI API Key** → la agregas manualmente
+4. **Todo conectado** → IA funciona sin configuración adicional
 
 ---
 
@@ -1038,7 +1605,7 @@ describe('Authentication Integration', () => {
 
 ---
 
-## 7. FLUJO DE ENCRIPTACIÓN Y JWT
+## 8. FLUJO DE ENCRIPTACIÓN Y JWT
 
 ### **Sistema de Seguridad Completo:**
 
@@ -1495,7 +2062,590 @@ Authorization: Bearer <access_token>
 
 ---
 
-## 8. PREGUNTAS FRECUENTES
+## 9. SISTEMA DE AUDIO (TEXT-TO-SPEECH)
+
+### **📁 UBICACIÓN DEL AUDIO:**
+```
+📁 public/assets/js/services/ttsService.js - Servicio completo de TTS
+📁 public/assets/js/views/couder.js - Implementación en vista de couder
+📁 public/assets/css/main.css - Estilos para controles de audio
+```
+
+### **🎯 CÓMO FUNCIONA EL AUDIO:**
+
+#### **1. Servicio TTS Principal:**
+```javascript
+// 📁 public/assets/js/services/ttsService.js
+class TTSService {
+    constructor() {
+        this.synthesis = window.speechSynthesis;
+        this.currentUtterance = null;
+        this.isSpeaking = false;
+    }
+    
+    // Método principal para hablar texto
+    speak(text, options = {}) {
+        // Detener cualquier audio en curso
+        this.stop();
+        
+        // Crear nueva instancia de SpeechSynthesisUtterance
+        this.currentUtterance = new SpeechSynthesisUtterance(text);
+        
+        // Configurar opciones
+        this.currentUtterance.rate = options.rate || 1; // Velocidad (0.1 a 10)
+        this.currentUtterance.pitch = options.pitch || 1; // Tono (0 a 2)
+        this.currentUtterance.volume = options.volume || 1; // Volumen (0 a 1)
+        this.currentUtterance.lang = options.lang || 'es-ES'; // Idioma
+        
+        // Eventos del audio
+        this.currentUtterance.onstart = () => {
+            this.isSpeaking = true;
+            console.log('TTS: Started speaking');
+        };
+        
+        this.currentUtterance.onend = () => {
+            this.isSpeaking = false;
+            this.currentUtterance = null;
+            console.log('TTS: Finished speaking');
+        };
+        
+        this.currentUtterance.onerror = (event) => {
+            console.error('TTS Error:', event);
+            this.isSpeaking = false;
+            this.currentUtterance = null;
+        };
+        
+        // Iniciar reproducción
+        this.synthesis.speak(this.currentUtterance);
+    }
+    
+    // Detener audio
+    stop() {
+        if (this.synthesis.speaking) {
+            this.synthesis.cancel();
+        }
+        this.isSpeaking = false;
+        this.currentUtterance = null;
+    }
+    
+    // Pausar audio
+    pause() {
+        if (this.synthesis.speaking && !this.synthesis.paused) {
+            this.synthesis.pause();
+        }
+    }
+    
+    // Reanudar audio
+    resume() {
+        if (this.synthesis.paused) {
+            this.synthesis.resume();
+        }
+    }
+    
+    // Obtener voces disponibles
+    getVoices() {
+        return this.synthesis.getVoices();
+    }
+    
+    // Verificar si está hablando
+    getIsSpeaking() {
+        return this.isSpeaking;
+    }
+}
+
+// Instancia global
+const ttsService = new TTSService();
+```
+
+#### **2. Implementación en Vista de Couder:**
+```javascript
+// 📁 public/assets/js/views/couder.js
+class CouderView {
+    static renderContent(couder, interventions, aiAnalyses) {
+        // ... código de renderizado ...
+        
+        // Agregar botones de TTS
+        const ttsHTML = `
+            <div class="tts-controls">
+                <button id="btn-tts-summary" class="tts-btn">
+                    🔊 Read Summary
+                </button>
+                <button id="btn-tts-diagnosis" class="tts-btn">
+                    🔊 Read Diagnosis
+                </button>
+                <button id="btn-tts-suggestions" class="tts-btn">
+                    🔊 Read Suggestions
+                </button>
+                <button id="btn-tts-stop" class="tts-btn stop-btn">
+                    ⏹️ Stop
+                </button>
+            </div>
+        `;
+        
+        // Insertar controles TTS en el contenido
+        content.insertAdjacentHTML('beforeend', ttsHTML);
+        
+        // Adjuntar event listeners
+        this.attachTTSListeners(aiAnalyses);
+    }
+    
+    static attachTTSListeners(aiAnalyses) {
+        // Botón para leer resumen
+        document.getElementById('btn-tts-summary')?.addEventListener('click', () => {
+            const summary = aiAnalyses[0]?.summary || 'No summary available';
+            ttsService.speak(summary, {
+                rate: 0.9, // Velocidad más lenta para mejor comprensión
+                lang: 'es-ES' // Español
+            });
+        });
+        
+        // Botón para leer diagnóstico
+        document.getElementById('btn-tts-diagnosis')?.addEventListener('click', () => {
+            const diagnosis = aiAnalyses[0]?.diagnosis || 'No diagnosis available';
+            ttsService.speak(diagnosis, {
+                rate: 0.9,
+                lang: 'es-ES'
+            });
+        });
+        
+        // Botón para leer sugerencias
+        document.getElementById('btn-tts-suggestions')?.addEventListener('click', () => {
+            const suggestions = aiAnalyses[0]?.suggestions || [];
+            const suggestionsText = suggestions.length > 0 
+                ? suggestions.join('. ') 
+                : 'No suggestions available';
+            
+            ttsService.speak(suggestionsText, {
+                rate: 0.9,
+                lang: 'es-ES'
+            });
+        });
+        
+        // Botón para detener
+        document.getElementById('btn-tts-stop')?.addEventListener('click', () => {
+            ttsService.stop();
+        });
+    }
+}
+```
+
+#### **3. Estilos CSS para TTS:**
+```css
+/* 📁 public/assets/css/main.css */
+.tts-controls {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+    padding: 15px;
+    background: rgba(59, 130, 246, 0.1);
+    border-radius: 8px;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.tts-btn {
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.tts-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.tts-btn:active {
+    transform: translateY(0);
+}
+
+.tts-btn.stop-btn {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.tts-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Indicador de audio activo */
+.tts-speaking {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.6; }
+    100% { opacity: 1; }
+}
+```
+
+### **🎧 FLUJO COMPLETO DEL AUDIO:**
+
+#### **1. Usuario hace clic en "🔊 Read Summary":**
+```javascript
+// 1. Event listener captura el clic
+document.getElementById('btn-tts-summary').addEventListener('click', () => {
+    // 2. Obtiene el texto del resumen
+    const summary = aiAnalyses[0]?.summary || 'No summary available';
+    
+    // 3. Llama al servicio TTS
+    ttsService.speak(summary, {
+        rate: 0.9,     // Velocidad 90% (más lenta para claridad)
+        lang: 'es-ES'   // Idioma español
+    });
+});
+```
+
+#### **2. TTSService procesa el audio:**
+```javascript
+// 1. Detiene cualquier audio anterior
+this.stop();
+
+// 2. Crea SpeechSynthesisUtterance
+this.currentUtterance = new SpeechSynthesisUtterance(text);
+
+// 3. Configura parámetros
+this.currentUtterance.rate = 0.9;        // Velocidad
+this.currentUtterance.lang = 'es-ES';    // Idioma
+this.currentUtterance.volume = 1;        // Volumen máximo
+
+// 4. Inicia reproducción
+this.synthesis.speak(this.currentUtterance);
+```
+
+#### **3. Navegador reproduce el audio:**
+- **Chrome/Edge**: Usa Google TTS (muy natural)
+- **Firefox**: Usa TTS nativo del sistema
+- **Safari**: Usa TTS de macOS/iOS
+- **Móvil**: Usa TTS nativo del dispositivo
+
+---
+
+## 10. FLUJO COMPLETO DE REGISTRO Y LOGIN
+
+### **📝 1. REGISTRO DE USUARIO**
+
+#### **Frontend (Registro):**
+```javascript
+// 📁 public/assets/js/views/register.js
+class RegisterView {
+    static async handleRegister(event) {
+        event.preventDefault();
+        
+        // 1. Obtener datos del formulario
+        const formData = {
+            fullName: document.getElementById('fullName').value,
+            email: document.getElementById('email').value,
+            password: document.getElementById('password').value,
+            roleId: 1 // Solo rol de interventor
+        };
+        
+        try {
+            // 2. Enviar al backend
+            const response = await API.post('/auth/register', formData);
+            
+            // 3. Redirigir a login
+            Toast.show('Registration successful! Please login.', 'success');
+            Router.navigate('login');
+            
+        } catch (error) {
+            Toast.show('Registration failed: ' + error.message, 'error');
+        }
+    }
+}
+```
+
+#### **Backend (Registro):**
+```javascript
+// 📁 src/controllers/authController.js
+static async register(req, res) {
+    try {
+        const { fullName, email, password, roleId } = req.body;
+        
+        // 1. Validar que el email no exista
+        const existingUser = await UserRepository.findByEmail(email);
+        if (existingUser) {
+            return res.status(409).json({ error: 'Email already registered' });
+        }
+        
+        // 2. Hashear contraseña
+        const passwordHash = await bcrypt.hash(password, 12);
+        
+        // 3. Crear usuario
+        const user = await UserRepository.create({
+            full_name: fullName,
+            email,
+            password_hash: passwordHash,
+            role_id: roleId,
+            is_active: true
+        });
+        
+        // 4. Retornar usuario sin contraseña
+        const { password_hash, ...userWithoutPassword } = user;
+        
+        res.status(201).json({
+            ok: true,
+            data: userWithoutPassword,
+            message: 'User registered successfully'
+        });
+        
+    } catch (error) {
+        res.status(500).json({ error: 'Registration failed' });
+    }
+}
+```
+
+### **🔑 2. LOGIN DE USUARIO**
+
+#### **Frontend (Login):**
+```javascript
+// 📁 public/assets/js/views/login.js
+class LoginView {
+    static async handleLogin(event) {
+        event.preventDefault();
+        
+        // 1. Obtener credenciales
+        const credentials = {
+            email: document.getElementById('email').value,
+            password: document.getElementById('password').value
+        };
+        
+        try {
+            // 2. Enviar al backend
+            const response = await API.post('/auth/login', credentials);
+            
+            // 3. Guardar tokens en localStorage
+            localStorage.setItem('accessToken', response.accessToken);
+            localStorage.setItem('refreshToken', response.refreshToken);
+            localStorage.setItem('user', JSON.stringify(response.user));
+            
+            // 4. Redirigir al dashboard
+            Toast.show('Login successful!', 'success');
+            Router.navigate('dashboard');
+            
+        } catch (error) {
+            Toast.show('Login failed: ' + error.message, 'error');
+        }
+    }
+}
+```
+
+#### **Backend (Login):**
+```javascript
+// 📁 src/controllers/authController.js
+static async login(req, res) {
+    try {
+        const { email, password } = req.body;
+        
+        // 1. Buscar usuario por email
+        const user = await UserRepository.findByEmail(email);
+        if (!user) {
+            return res.status(401).json({ error: 'Invalid credentials' });
+        }
+        
+        // 2. Verificar contraseña
+        const isValidPassword = await bcrypt.compare(password, user.password_hash);
+        if (!isValidPassword) {
+            return res.status(401).json({ error: 'Invalid credentials' });
+        }
+        
+        // 3. Generar tokens JWT
+        const accessToken = JWTUtils.generateAccessToken({
+            userId: user.id,
+            email: user.email,
+            roleId: user.role_id
+        });
+        
+        const refreshToken = JWTUtils.generateRefreshToken({
+            userId: user.id
+        });
+        
+        // 4. Retornar tokens y datos del usuario
+        const { password_hash, ...userWithoutPassword } = user;
+        
+        res.json({
+            ok: true,
+            data: {
+                accessToken,
+                refreshToken,
+                user: userWithoutPassword
+            },
+            message: 'Login successful'
+        });
+        
+    } catch (error) {
+        res.status(500).json({ error: 'Login failed' });
+    }
+}
+```
+
+### **🔄 3. FLUJO DE AUTENTICACIÓN COMPLETO**
+
+```javascript
+// 📁 src/middleware/authMiddleware.js
+const authMiddleware = async (req, res, next) => {
+    try {
+        // 1. Extraer token del header
+        const authHeader = req.headers.authorization;
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return res.status(401).json({ error: 'No token provided' });
+        }
+        
+        const token = authHeader.replace('Bearer ', '');
+        
+        // 2. Verificar token
+        const decoded = JWTUtils.verifyAccessToken(token);
+        
+        // 3. Verificar que el usuario existe y está activo
+        const user = await UserRepository.findById(decoded.userId);
+        if (!user || !user.is_active) {
+            return res.status(401).json({ error: 'User not found or inactive' });
+        }
+        
+        // 4. Adjuntar usuario al request
+        req.user = {
+            id: user.id,
+            email: user.email,
+            roleId: user.role_id,
+            fullName: user.full_name
+        };
+        
+        next();
+        
+    } catch (error) {
+        res.status(401).json({ error: 'Invalid token' });
+    }
+};
+```
+
+---
+
+## 11. UBICACIÓN EXACTA DE COMPONENTES
+
+### **📁 ESTRUCTURA COMPLETA DEL PROYECTO:**
+```
+project-Riwi/
+├── 📁 src/                          # Backend Node.js
+│   ├── 📁 controllers/              # 🎯 Controladores API
+│   │   ├── authController.js        # Login/registro
+│   │   ├── couderController.js      # Gestión de couders
+│   │   ├── aiAnalysisController.js  # Análisis con IA
+│   │   └── dashboardController.js  # Dashboard principal
+│   ├── 📁 services/                 # 🎯 Lógica de negocio
+│   │   ├── authService.js           # Autenticación
+│   │   ├── aiAnalysisService.js     # 🎯 IA con OpenAI
+│   │   ├── couderService.js         # Gestión de couders
+│   │   └── interventionService.js   # Intervenciones
+│   ├── 📁 repositories/             # 🎯 Acceso a datos BD
+│   │   ├── userRepository.js         # Usuarios
+│   │   ├── couderRepository.js      # Couders
+│   │   ├── interventionRepository.js # Intervenciones
+│   │   └── aiAnalysisRepository.js  # 🎯 Análisis de IA
+│   ├── 📁 middleware/               # 🎯 Middleware de seguridad
+│   │   └── authMiddleware.js        # 🎯 JWT authentication
+│   ├── 📁 utils/                    # Utilidades
+│   │   └── jwt.js                   # 🎯 Token management
+│   ├── 📁 config/                   # Configuración
+│   │   ├── postgres.js              # 🎯 PostgreSQL connection
+│   │   ├── env.js                   # 🎯 Environment variables
+│   │   └── mongodb.js               # MongoDB config (legacy)
+│   └── 📁 exceptions/               # Manejo de errores
+│       ├── AppError.js              # Error base
+│       ├── NotFoundError.js          # 404 errors
+│       └── ValidationError.js        # Validation errors
+├── 📁 public/                       # Frontend SPA
+│   ├── 📁 assets/js/
+│   │   ├── api.js                   # 🎯 API calls
+│   │   ├── router.js                # 🎯 SPA routing
+│   │   ├── auth.js                  # Authentication
+│   │   ├── components/
+│   │   │   ├── navbar.js             # Navigation
+│   │   │   └── toast.js              # Notifications
+│   │   ├── services/
+│   │   │   ├── ttsService.js        # 🎯 Text-to-Speech
+│   │   │   └── translationHelper.js # 🎯 Data translation
+│   │   └── views/
+│   │       ├── login.js             # 🎯 Login view
+│   │       ├── register.js          # 🎯 Registration view
+│   │       ├── couder.js            # 🎯 Couder profile
+│   │       ├── dashboard.js         # 🎯 Main dashboard
+│   │       ├── search.js            # Search couders
+│   │       ├── cohort.js            # Cohort view
+│   │       └── clan.js              # Clan view
+│   └── 📁 assets/css/
+│       └── main.css                 # 🎯 TTS styles & general
+├── 📁 __tests__/                    # 🎯 All tests
+│   ├── authService.test.js           # Auth tests
+│   ├── couderController.test.js      # Controller tests
+│   ├── aiAnalysisService.test.js     # AI service tests
+│   ├── integration/                  # Integration tests
+│   │   └── auth.test.js             # Full auth flow
+│   └── setup.js                     # Test configuration
+├── 📁 data/                         # 🎯 Database schema
+│   ├── schema.sql                   # Complete schema
+│   └── DATABASE_SCHEMA.md            # Documentation
+├── 📁 docs/                         # 🎯 Documentation
+│   └── LIMPIEZA_DATOS.md            # Data cleaning
+├── 📁 scripts/                      # 🎯 Migration/seeds
+│   ├── run-migration.js             # Database migration
+│   ├── seed-data.js                 # Initial data
+│   └── clean-bad-data.js            # Data cleaning
+├── 📄 EXPLICACION_CODIGO.md         # 🎯 This presentation file
+├── 📄 README.md                     # 🎯 Project documentation
+├── 📄 RAILWAY_DEPLOYMENT.md         # 🎯 Deployment guide
+├── 📄 package.json                  # Dependencies
+└── 📄 .env.example                  # Environment template
+```
+
+### **🎯 COMPONENTES CLAVE CON UBICACIÓN:**
+
+#### **🤖 Inteligencia Artificial:**
+```
+📁 src/services/aiAnalysisService.js      ← Servicio principal IA
+📁 src/controllers/aiAnalysisController.js ← Endpoints HTTP
+📁 src/repositories/aiAnalysisRepository.js ← Almacenamiento BD
+```
+
+#### **🔐 Autenticación y Seguridad:**
+```
+📁 src/services/authService.js            ← Lógica de autenticación
+📁 src/controllers/authController.js       ← Endpoints auth
+📁 src/middleware/authMiddleware.js        ← Middleware JWT
+📁 src/utils/jwt.js                        ← Utilidades JWT
+```
+
+#### **🗄️ Base de Datos:**
+```
+📁 src/config/postgres.js                   ← Conexión PostgreSQL
+📁 src/repositories/ (todos)               ← Acceso a datos
+📁 data/schema.sql                         ← Esquema completo
+```
+
+#### **🌐 Frontend:**
+```
+📁 public/assets/js/api.js                 ← API client
+📁 public/assets/js/router.js              ← SPA routing
+📁 public/assets/js/services/ttsService.js ← Text-to-Speech
+📁 public/assets/js/views/ (todos)         ← Vistas de la aplicación
+```
+
+#### **🧪 Testing:**
+```
+📁 __tests__/ (todos los archivos)          ← Suite completa de tests
+📁 __tests__/setup.js                      ← Configuración de tests
+```
+
+---
+
+## 12. PREGUNTAS FRECUENTES
 
 ### **P1: ¿Cómo garantizan la privacidad del couder en el análisis de IA?**
 
@@ -1727,7 +2877,7 @@ module.exports = {
 
 ---
 
-## 9. CONCLUSIÓN
+## 13. CONCLUSIÓN
 
 ### **Resumen Técnico del Proyecto:**
 
