@@ -4,7 +4,7 @@
 
 ---
 
-## 🎯 Project Vision
+## Project Vision
 
 Project-Riwi is a cutting-edge technological solution designed to revolutionize clinical intervention management in educational programs. It combines the power of data analysis with artificial intelligence to provide valuable insights that improve the effectiveness of clinical follow-up.
 
@@ -16,29 +16,29 @@ Project-Riwi is a cutting-edge technological solution designed to revolutionize 
 
 ---
 
-## ✨ Featured Highlights
+## Featured Highlights
 
-### 🤖 Integrated Artificial Intelligence
+### Integrated Artificial Intelligence
 - **Automated clinical analysis** with OpenAI GPT-3.5 Turbo
 - **Intelligent synthesis** of intervention history
 - **Predictive diagnosis** based on identified patterns
 - **Personalized recommendations** for each case
 - **Privacy protected**: The couder is referred to as "couder", without personal data
 
-### 📊 Analytics Dashboard
+### Analytics Dashboard
 - **Real-time metrics** of the entire organization
 - **Hierarchical visualization**: Sites → Cohorts → Clans → Couders
 - **Key KPIs**: Intervention rates, progress status, trends
 - **Dynamic filters** for segmented analysis
 
-### 🔒 Enterprise Security
+### Enterprise Security
 - **JWT authentication** with access and refresh tokens
 - **Data encryption** with bcryptjs (12 rounds)
 - **Security headers** configured with Helmet
 - **Rate limiting** for attack protection
 - **CORS and CSP** configured for production
 
-### 🎨 Premium User Experience
+### Premium User Experience
 - **Responsive SPA** with Tailwind CSS
 - **Intuitive navigation** without page reloads
 - **Advanced search** by ID number
@@ -47,7 +47,7 @@ Project-Riwi is a cutting-edge technological solution designed to revolutionize 
 
 ---
 
-## 🏗️ Enterprise Architecture
+## Enterprise Architecture
 
 ### Professional Technology Stack
 | Component | Technology | Competitive Advantage |
@@ -68,7 +68,7 @@ Our database design follows best practices for normalization:
 
 ---
 
-## 📈 Impact and Results
+##  Impact and Results
 
 ### Performance Metrics
 - **Response time**: < 200ms average
@@ -84,7 +84,7 @@ Our database design follows best practices for normalization:
 
 ---
 
-## 🔄 Use Cases
+##  Use Cases
 
 ### 1. Clinical Intervention Management
 ```javascript
@@ -118,7 +118,7 @@ Our database design follows best practices for normalization:
 
 ---
 
-## 🚀 Implementation and Deployment
+##  Implementation and Deployment
 
 ### Technical Requirements
 - **Node.js 18+** for runtime
@@ -153,7 +153,7 @@ npm start
 
 ---
 
-## 🔐 Security and Compliance
+## Security and Compliance
 
 ### Security Standards
 - **ISO 27001** - Information security management
@@ -179,7 +179,7 @@ npm start
 
 ---
 
-## 🗄️ Database Map
+## Database Map
 
 ### Entity-Relationship Diagram
 ```
@@ -286,7 +286,7 @@ project-Riwi/
 
 ---
 
-## 🧪 Testing and Quality
+## Testing and Quality
 
 ### Complete Test Suite
 - **Unit Tests**: Individual function tests
@@ -308,7 +308,7 @@ npm run test:watch
 
 ---
 
-## 📋 Environment Variables
+##  Environment Variables
 
 ### Required Configuration
 ```bash
@@ -330,7 +330,7 @@ FRONTEND_URL=http://localhost:3000
 
 ---
 
-## 🔄 Future Roadmap
+##  Future Roadmap
 
 ### Version 2.0 (Q2 2026)
 - **Native mobile** iOS and Android
@@ -346,7 +346,7 @@ FRONTEND_URL=http://localhost:3000
 
 ---
 
-## 💡 Value Proposition
+##  Value Proposition
 
 ### For Educational Institutions
 - **Complete digital transformation** of the clinical process
@@ -368,7 +368,7 @@ FRONTEND_URL=http://localhost:3000
 
 ---
 
-## 📞 Contact and Support
+##  Contact and Support
 
 ### Development Team
 - **Principal Architect**: Clinical systems specialist
@@ -390,7 +390,7 @@ FRONTEND_URL=http://localhost:3000
 
 ---
 
-## 🚀 Call to Action
+##  Call to Action
 
 **Project-Riwi is ready to revolutionize your clinical intervention management.**
 
@@ -407,7 +407,7 @@ FRONTEND_URL=http://localhost:3000
 
 ---
 
-## 📄 License
+## License
 
 ** Project-Riwi - All rights reserved**
 
